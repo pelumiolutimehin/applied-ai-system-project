@@ -38,13 +38,13 @@ def main() -> None:
     print(f'Loaded songs: {len(songs)}')
 
     # Starter example profile
-    user_prefs = {"favorite_genre": "jazz",
+    user_prefs = {"favorite_genre": "r&b",
                      "favorite_mood": "chill",
                      "target_energy": 0.55,
                      "target_valence": 0.8,
                      "target_acousticness": 0.5}
 
-    chill_acoustic_profile = {"favorite_genre": "folk", "favorite_mood": "chill",
+    chill_acoustic_profile = {"favorite_genre": "pop", "favorite_mood": "chill",
                  "target_energy": 0.40, "target_valence": 0.58, "target_acousticness": 0.80}
     intense_rock_profile = {"favorite_genre": "rock", "favorite_mood": "intense",
                  "target_energy": 0.92, "target_valence": 0.48, "target_acousticness": 0.10}
@@ -64,17 +64,17 @@ def main() -> None:
         },
         # 3. Near-miss / formatting labels
         "label_near_miss": {
-            "favorite_genre": "Hip-Hop ", "favorite_mood": " Chill",   # vs "hip hop", "chill"
+            "favorite_genre": "R&B ", "favorite_mood": " Chill",   # vs "r&b", "chill"
             "target_energy": 0.40, "target_valence": 0.58, "target_acousticness": 0.80,
         },
         # 4. Dead-center user
         "all_midpoint": {
-            "favorite_genre": "jazz", "favorite_mood": "happy",
+            "favorite_genre": "pop", "favorite_mood": "happy",
             "target_energy": 0.5, "target_valence": 0.5, "target_acousticness": 0.5,
         },
         # 5. Genre trap: genre match but every numeric feature is opposite
         "genre_trap": {
-            "favorite_genre": "classical", "favorite_mood": "intense",
+            "favorite_genre": "r&b", "favorite_mood": "intense",
             "target_energy": 0.95, "target_valence": 0.2, "target_acousticness": 0.0,
         },
         # 6. Out-of-range targets

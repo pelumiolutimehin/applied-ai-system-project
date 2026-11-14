@@ -1,0 +1,15 @@
+# Artists excluded from the "latin" genre only (one per line, case-insensitive).
+# The source dataset labels songs by playlist, so some playlist entries in latin playlists
+# are not latin music. Judged by hand from artist names, so this is a best effort.
+# Used by scripts/build_catalog.py. These artists can still appear in other genres.
+
+Ed Sheeran
+Yellowcard
+Rednex
+Cypress Hill
+Andy Grammer
+The Black Eyed Peas
+Afro B
+Deep Chills
+Sad Eye
+Glaceo
