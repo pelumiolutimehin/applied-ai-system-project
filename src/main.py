@@ -9,6 +9,7 @@ You will implement the functions in recommender.py:
 - recommend_songs
 """
 
+from src.profile import ProfileError
 from src.recommender import load_songs, recommend_songs
 
 def print_recommendations(recommendations) -> None:
@@ -37,13 +38,13 @@ def main() -> None:
     print(f'Loaded songs: {len(songs)}')
 
     # Starter example profile
-    user_prefs = {"favorite_genre": "lofi",
-                     "favorite_mood": "relaxed",
+    user_prefs = {"favorite_genre": "jazz",
+                     "favorite_mood": "chill",
                      "target_energy": 0.55,
                      "target_valence": 0.8,
                      "target_acousticness": 0.5}
 
-    chill_lofi_profile = {"favorite_genre": "lofi", "favorite_mood": "chill",
+    chill_acoustic_profile = {"favorite_genre": "folk", "favorite_mood": "chill",
                  "target_energy": 0.40, "target_valence": 0.58, "target_acousticness": 0.80}
     intense_rock_profile = {"favorite_genre": "rock", "favorite_mood": "intense",
                  "target_energy": 0.92, "target_valence": 0.48, "target_acousticness": 0.10}
@@ -63,7 +64,7 @@ def main() -> None:
         },
         # 3. Near-miss / formatting labels
         "label_near_miss": {
-            "favorite_genre": "Lo-Fi ", "favorite_mood": "relaxed",   # vs "lofi", "chill"
+            "favorite_genre": "Hip-Hop ", "favorite_mood": " Chill",   # vs "hip hop", "chill"
             "target_energy": 0.40, "target_valence": 0.58, "target_acousticness": 0.80,
         },
         # 4. Dead-center user
@@ -73,7 +74,7 @@ def main() -> None:
         },
         # 5. Genre trap: genre match but every numeric feature is opposite
         "genre_trap": {
-            "favorite_genre": "lofi", "favorite_mood": "intense",
+            "favorite_genre": "classical", "favorite_mood": "intense",
             "target_energy": 0.95, "target_valence": 0.2, "target_acousticness": 0.0,
         },
         # 6. Out-of-range targets
@@ -89,17 +90,20 @@ def main() -> None:
         },
     }
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
+    all_profiles = {
+        "starter": user_prefs,
+        "chill_acoustic": chill_acoustic_profile,
+        "intense_rock": intense_rock_profile,
+        "high_energy_pop": high_energy_pop_profile,
+        **ADVERSARIAL_PROFILES,
+    }
 
-    print_recommendations(recommendations)
-
-    print_recommendations(recommend_songs(chill_lofi_profile, songs, k=5))
-    print_recommendations(recommend_songs(intense_rock_profile, songs, k=5))
-    print_recommendations(recommend_songs(high_energy_pop_profile, songs, k=5))
-
-    print_recommendations(recommend_songs(ADVERSARIAL_PROFILES.get("sad_but_hyper"), songs, k=5))
-    print_recommendations(recommend_songs(ADVERSARIAL_PROFILES.get("ghost_labels"), songs, k=5))
-    print_recommendations(recommend_songs(ADVERSARIAL_PROFILES.get("label_near_miss"), songs, k=5))
+    for name, profile in all_profiles.items():
+        print(f"\n>>> Profile: {name}")
+        try:
+            print_recommendations(recommend_songs(profile, songs, k=5))
+        except ProfileError as err:
+            print(f"    Rejected by guardrail: {err}")
 
 if __name__ == "__main__":
     main()
