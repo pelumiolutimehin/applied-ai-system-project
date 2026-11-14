@@ -7,15 +7,33 @@ Run from the repo root:
 import streamlit as st
 
 from src import config
-from src.config import CATALOG_PATH
+from src.config import CATALOG_PATH, KNOWLEDGE_PATH
+from src.explainer import explain_recommendations
 from src.llm_parser import MAX_REQUEST_CHARS, ParseError, parse_request
 from src.profile import ProfileError, UserProfile, validate_profile
 from src.recommender import load_songs, recommend_songs
+from src.retriever import Retriever, load_notes
 
 
 @st.cache_data
 def get_songs():
     return load_songs(str(CATALOG_PATH))
+
+
+@st.cache_resource
+def get_retriever() -> Retriever:
+    return Retriever(load_notes(KNOWLEDGE_PATH))
+
+
+@st.cache_data(ttl=120, show_spinner="Writing explanations...")
+def cached_explain(profile: tuple, k: int):
+    """Explain the top-k results for a profile. Cached so reruns do not repeat the API call.
+
+    The profile arrives as a tuple of its field values because cache keys must be hashable.
+    """
+    user = UserProfile(*profile)
+    recommendations = recommend_songs(user, get_songs(), k=k)
+    return explain_recommendations(user, recommendations, get_retriever())
 
 
 @st.cache_data(ttl=120, show_spinner="Reading your request...")
@@ -61,8 +79,8 @@ def sidebar_profile(songs) -> UserProfile:
     })
 
 
-def show_recommendations(recommendations) -> None:
-    for rank, (song, score, explanation) in enumerate(recommendations, start=1):
+def show_recommendations(recommendations, explanations=None) -> None:
+    for rank, (song, score, breakdown) in enumerate(recommendations, start=1):
         with st.container(border=True):
             st.subheader(f"#{rank}  {song['title']}")
             st.write(f"by **{song['artist']}**")
@@ -72,7 +90,12 @@ def show_recommendations(recommendations) -> None:
             st.caption(" · ".join(meta))
             st.progress(min(max(score, 0.0), 1.0), text=f"Match score: {score:.2f} / 1.00")
             with st.expander("Why this song?"):
-                for reason in explanation.split(", "):
+                ai = explanations[rank - 1] if explanations else None
+                if ai is not None and ai.source == "llm":
+                    st.write(ai.text)
+                    st.caption("AI-written from these notes: " + ", ".join(ai.notes_used))
+                st.markdown("**Score breakdown**")
+                for reason in breakdown.split(", "):
                     st.write(f"- {reason}")
 
 
@@ -85,6 +108,15 @@ def main() -> None:
 
     slider_profile = sidebar_profile(songs)
     k = st.sidebar.slider("Number of results", 3, 10, 5, key="k")
+    ai_available = config.llm_available()
+    want_explanations = st.sidebar.checkbox(
+        "AI explanations",
+        value=ai_available,
+        disabled=not ai_available,
+        key="explain",
+        help="Writes a short explanation per song from the knowledge notes. "
+        "Makes one API call per change of results." if ai_available else "Needs a GEMINI_API_KEY.",
+    )
 
     request = st.text_input(
         "Describe what you want to hear",
@@ -114,7 +146,11 @@ def main() -> None:
         st.error(f"Invalid profile: {err}")
         return
 
-    show_recommendations(recommendations)
+    explanations = None
+    if want_explanations:
+        explanations = cached_explain(tuple(profile.to_dict().values()), k)
+
+    show_recommendations(recommendations, explanations)
 
 
 main()

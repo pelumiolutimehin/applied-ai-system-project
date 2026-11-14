@@ -10,6 +10,7 @@ DATA_DIR = ROOT_DIR / "data"
 CATALOG_PATH = DATA_DIR / "songs.csv"
 RAW_SOURCE_PATH = DATA_DIR / "spotify_songs.csv"
 LATIN_EXCLUSIONS_PATH = DATA_DIR / "latin_exclusions.txt"
+KNOWLEDGE_PATH = DATA_DIR / "knowledge" / "notes.json"
 
 load_dotenv(ROOT_DIR / ".env")
 
