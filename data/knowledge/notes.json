@@ -1,0 +1,230 @@
+[
+  {
+    "id": "genre:pop",
+    "kind": "genre",
+    "name": "pop",
+    "text": "Pop is built around catchy melodies, clear hooks and polished production aimed at a wide audience. In this catalog the label comes from playlists, so it spans very different sounds, from dance-oriented tracks to indie-leaning songs."
+  },
+  {
+    "id": "genre:rap",
+    "kind": "genre",
+    "name": "rap",
+    "text": "Rap centers on rhythmic spoken vocals over beats, with the delivery and lyrics as the main focus. In this catalog it spans trap, southern, gangster and classic hip hop styles."
+  },
+  {
+    "id": "genre:rock",
+    "kind": "genre",
+    "name": "rock",
+    "text": "Rock is guitar-driven music, usually with drums and bass, ranging from melodic classic rock to heavy, distorted hard rock. It is often loud and energetic, with a live-band feel."
+  },
+  {
+    "id": "genre:r&b",
+    "kind": "genre",
+    "name": "r&b",
+    "text": "R&B blends soulful, melodic vocals with groove-oriented rhythm. It ranges from smooth, mellow neo soul to rhythmic, dance-friendly styles."
+  },
+  {
+    "id": "genre:edm",
+    "kind": "genre",
+    "name": "edm",
+    "text": "Electronic dance music is made for clubs and festivals, built on synthesized sounds, steady danceable beats and dramatic builds and drops. It is mostly electronic rather than acoustic."
+  },
+  {
+    "id": "genre:latin",
+    "kind": "genre",
+    "name": "latin",
+    "text": "Latin music covers Spanish- and Portuguese-language styles and Latin-influenced pop and urban music, with rhythmic, danceable grooves. Because genre labels here come from playlists, some tracks are Latin-influenced rather than strictly Latin."
+  },
+  {
+    "id": "subgenre:big room",
+    "kind": "subgenre",
+    "name": "big room",
+    "text": "Big room is a festival-oriented style of EDM with huge, simple melodic leads, heavy kick drums and dramatic build-ups and drops. It is loud and high-energy by design."
+  },
+  {
+    "id": "subgenre:electro house",
+    "kind": "subgenre",
+    "name": "electro house",
+    "text": "Electro house combines house music's steady four-on-the-floor beat with aggressive, distorted synth bass and sharp, punchy sound design. It is club-focused and high-energy."
+  },
+  {
+    "id": "subgenre:pop edm",
+    "kind": "subgenre",
+    "name": "pop edm",
+    "text": "Pop EDM pairs electronic dance production with pop song structure: vocal hooks, bright melodies and drops that stay radio-friendly."
+  },
+  {
+    "id": "subgenre:progressive electro house",
+    "kind": "subgenre",
+    "name": "progressive electro house",
+    "text": "Progressive electro house uses longer, gradual builds and layered melodies over electro house sounds, aiming for an emotional, anthemic feel."
+  },
+  {
+    "id": "subgenre:latin hip hop",
+    "kind": "subgenre",
+    "name": "latin hip hop",
+    "text": "Latin hip hop blends rap vocals, often in Spanish, with Latin rhythms and urban beats."
+  },
+  {
+    "id": "subgenre:latin pop",
+    "kind": "subgenre",
+    "name": "latin pop",
+    "text": "Latin pop mixes pop songwriting with Latin rhythms and instrumentation, usually with melodic, romantic or danceable songs."
+  },
+  {
+    "id": "subgenre:reggaeton",
+    "kind": "subgenre",
+    "name": "reggaeton",
+    "text": "Reggaeton is built on the dembow rhythm, a steady syncopated beat, with rapped and sung vocals over it. It is made to be danced to."
+  },
+  {
+    "id": "subgenre:tropical",
+    "kind": "subgenre",
+    "name": "tropical",
+    "text": "Tropical music here covers warm, rhythmic styles with Caribbean and Latin influences. The playlist labels are broad, so it also includes some tropical house, a relaxed, summery electronic style."
+  },
+  {
+    "id": "subgenre:dance pop",
+    "kind": "subgenre",
+    "name": "dance pop",
+    "text": "Dance pop is pop built for the dance floor: upbeat tempos, bright synths and strong, repetitive hooks."
+  },
+  {
+    "id": "subgenre:electropop",
+    "kind": "subgenre",
+    "name": "electropop",
+    "text": "Electropop centers synthesizers and electronic production within pop songs, from glossy and bright to moody and minimal."
+  },
+  {
+    "id": "subgenre:indie poptimism",
+    "kind": "subgenre",
+    "name": "indie poptimism",
+    "text": "Indie poptimism describes pop-leaning songs with an independent, often offbeat sensibility, mixing pop hooks with more experimental or lo-fi touches."
+  },
+  {
+    "id": "subgenre:post-teen pop",
+    "kind": "subgenre",
+    "name": "post-teen pop",
+    "text": "Post-teen pop is a contemporary pop style with moody, minimalist production and confessional lyrics, often with muted melodies and a laid-back, emotional tone."
+  },
+  {
+    "id": "subgenre:hip pop",
+    "kind": "subgenre",
+    "name": "hip pop",
+    "text": "Hip pop blends R&B vocals with hip hop beats and a pop-friendly sound."
+  },
+  {
+    "id": "subgenre:neo soul",
+    "kind": "subgenre",
+    "name": "neo soul",
+    "text": "Neo soul updates classic soul with jazz harmony, hip hop influences and relaxed, intimate vocals. It tends to feel warm, smooth and mellow."
+  },
+  {
+    "id": "subgenre:new jack swing",
+    "kind": "subgenre",
+    "name": "new jack swing",
+    "text": "New jack swing fuses R&B vocals with hip hop drum programming and swung rhythms. It was popular in the late 1980s and early 1990s."
+  },
+  {
+    "id": "subgenre:urban contemporary",
+    "kind": "subgenre",
+    "name": "urban contemporary",
+    "text": "Urban contemporary is modern R&B with hip hop influences, smooth vocals and polished, rhythmic production."
+  },
+  {
+    "id": "subgenre:gangster rap",
+    "kind": "subgenre",
+    "name": "gangster rap",
+    "text": "Gangster rap is a hard-edged style of hip hop that focuses on street life, with heavy beats and direct, often aggressive delivery."
+  },
+  {
+    "id": "subgenre:hip hop",
+    "kind": "subgenre",
+    "name": "hip hop",
+    "text": "Hip hop in this subgenre is the classic rap style: boom-bap or sample-based beats under rhythmic, lyric-focused vocals."
+  },
+  {
+    "id": "subgenre:southern hip hop",
+    "kind": "subgenre",
+    "name": "southern hip hop",
+    "text": "Southern hip hop comes from the southern United States and is known for bass-heavy beats, slower grooves and distinctive regional flows."
+  },
+  {
+    "id": "subgenre:trap",
+    "kind": "subgenre",
+    "name": "trap",
+    "text": "Trap is a style of hip hop with fast, stuttering hi-hats, deep 808 bass and sparse, dark atmospheres."
+  },
+  {
+    "id": "subgenre:album rock",
+    "kind": "subgenre",
+    "name": "album rock",
+    "text": "Album rock is rock aimed at full-album listening, with polished studio production, long-form songwriting and a broad range of moods."
+  },
+  {
+    "id": "subgenre:classic rock",
+    "kind": "subgenre",
+    "name": "classic rock",
+    "text": "Classic rock covers influential guitar-driven rock from roughly the 1960s to the 1980s: strong riffs, melodic hooks and live-band energy."
+  },
+  {
+    "id": "subgenre:hard rock",
+    "kind": "subgenre",
+    "name": "hard rock",
+    "text": "Hard rock turns up rock's volume and intensity with distorted guitars, heavy riffs and powerful vocals."
+  },
+  {
+    "id": "subgenre:permanent wave",
+    "kind": "subgenre",
+    "name": "permanent wave",
+    "text": "Permanent wave is a Spotify label for new wave and alternative rock from the late 1970s onward, mixing rock guitars with synths and a stylish, often melodic sound."
+  },
+  {
+    "id": "mood:happy",
+    "kind": "mood",
+    "name": "happy",
+    "text": "In this app, a happy song has high energy (0.60 or more) and a positive valence (0.50 or more): upbeat, bright and lively."
+  },
+  {
+    "id": "mood:intense",
+    "kind": "mood",
+    "name": "intense",
+    "text": "In this app, an intense song has high energy (0.60 or more) but a lower valence (below 0.50): driving, powerful or darker in tone."
+  },
+  {
+    "id": "mood:chill",
+    "kind": "mood",
+    "name": "chill",
+    "text": "In this app, a chill song has lower energy (below 0.60) and a positive valence (0.50 or more): relaxed, easygoing and pleasant."
+  },
+  {
+    "id": "mood:sad",
+    "kind": "mood",
+    "name": "sad",
+    "text": "In this app, a sad song has lower energy (below 0.60) and a very low valence (below 0.30): slow and somber."
+  },
+  {
+    "id": "mood:melancholic",
+    "kind": "mood",
+    "name": "melancholic",
+    "text": "In this app, a melancholic song has lower energy (below 0.60) and a valence from 0.30 up to 0.50: wistful, reflective and bittersweet."
+  },
+  {
+    "id": "feature:energy",
+    "kind": "feature",
+    "name": "energy",
+    "text": "Energy runs from 0 to 1 and measures intensity and activity. Loud, fast, noisy tracks score high, and calm, quiet tracks score low."
+  },
+  {
+    "id": "feature:valence",
+    "kind": "feature",
+    "name": "valence",
+    "text": "Valence runs from 0 to 1 and describes how positive a track sounds, shown in the app as positivity. High values sound happy or cheerful, and low values sound sad, tense or angry."
+  },
+  {
+    "id": "feature:acousticness",
+    "kind": "feature",
+    "name": "acousticness",
+    "text": "Acousticness runs from 0 to 1 and measures confidence that a track uses acoustic instruments rather than electronic sounds. High values mean a mostly acoustic sound."
+  }
+]
