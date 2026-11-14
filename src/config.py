@@ -13,7 +13,7 @@ LATIN_EXCLUSIONS_PATH = DATA_DIR / "latin_exclusions.txt"
 
 load_dotenv(ROOT_DIR / ".env")
 
-DEFAULT_MODEL = "gemini-2.5-flash"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 
 def get_api_key() -> str:
