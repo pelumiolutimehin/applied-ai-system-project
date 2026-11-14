@@ -1,21 +1,241 @@
-id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
-1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18
-2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71
-3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10
-4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86
-5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05
-6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92
-7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89
-8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
-9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
-10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
-11,Concrete Crown,Verse Alchemy,hip hop,confident,0.78,92,0.62,0.85,0.12
-12,Dusty Porch Swing,Willow Creek Band,country,nostalgic,0.45,96,0.68,0.57,0.81
-13,Nocturne in Rain,Elena Marchetti,classical,melancholic,0.22,66,0.25,0.20,0.97
-14,Island Breeze,Rootsy Tide,reggae,laid-back,0.55,84,0.82,0.78,0.48
-15,Iron Cathedral,Black Meridian,metal,angry,0.97,168,0.22,0.45,0.03
-16,Velvet Hours,Sade Monroe,r&b,romantic,0.52,100,0.64,0.74,0.33
-17,Neon Pulse Festival,Drop Theory,edm,euphoric,0.95,128,0.88,0.92,0.04
-18,Hollow Pines,Ash & Ember,folk,melancholic,0.33,88,0.38,0.40,0.93
-19,Delta Midnight,Old Man Hayes,blues,sad,0.48,72,0.30,0.52,0.74
-20,Calle Sol,Los Marea,latin,joyful,0.86,100,0.91,0.90,0.27
+id,title,artist,genre,subgenre,mood,energy,tempo_bpm,valence,danceability,acousticness
+1,Who You Are,Jessie J,edm,big room,intense,0.667,136,0.215,0.534,0.023
+2,Booyah - Original Mix,Showtek,edm,big room,intense,0.953,128,0.499,0.738,0.008
+3,Guilty,Sick Individuals,edm,big room,intense,0.939,126,0.368,0.557,0.008
+4,Children Of Today,Blasterjaxx,edm,big room,intense,0.836,130,0.333,0.507,0.009
+5,Pyramids (feat. Sanjin) - Radio Mix,DVBBS,edm,big room,intense,0.965,128,0.215,0.602,0.0
+6,Taking Over,Contiez,edm,big room,happy,0.707,126,0.68,0.735,0.095
+7,Higher,Third Party,edm,big room,intense,0.881,127,0.24,0.472,0.008
+8,Are You Listening,DubVision,edm,big room,happy,0.886,126,0.587,0.563,0.002
+9,Bring It Back - Afrojack x Sunnery James & Ryan Marciano Edit,Jewelz & Sparks,edm,big room,intense,0.988,128,0.267,0.682,0.006
+10,Say Something - RetroVision Remix,Lucas & Steve,edm,big room,happy,0.756,126,0.795,0.779,0.215
+11,Cairo,Kamp!,edm,electro house,intense,0.842,100,0.186,0.595,0.069
+12,Work It Out,OFFAIAH,edm,electro house,happy,0.967,124,0.629,0.819,0.001
+13,Bootie in Your Face - No Rock Drop,Deorro,edm,electro house,intense,0.938,127,0.407,0.78,0.071
+14,Brain Extract,Metodi Hristov,edm,electro house,intense,0.838,130,0.082,0.749,0.06
+15,Gravity,Depdramez,edm,electro house,intense,0.933,128,0.133,0.709,0.001
+16,Love For Latinas - Radio Edit,Kramder,edm,electro house,happy,0.929,125,0.704,0.623,0.004
+17,Can't Get Enough,Lookas,edm,electro house,intense,0.969,150,0.403,0.605,0.016
+18,Wildfire,Audax,edm,electro house,intense,0.8,120,0.261,0.686,0.005
+19,Oldskool,Julian Jordan,edm,electro house,intense,0.976,126,0.073,0.655,0.004
+20,Waiting For Tomorrow (feat. Mike Shinoda),Martin Garrix,edm,electro house,intense,0.887,128,0.336,0.507,0.007
+21,I Will Never Let You Down - R3hab Remix,Rita Ora,edm,pop edm,intense,0.746,128,0.394,0.712,0.003
+22,Everybody Hates Me - Khrebto Remix,The Chainsmokers,edm,pop edm,intense,0.912,108,0.304,0.407,0.001
+23,When We Were Young,Lost Kings,edm,pop edm,intense,0.789,130,0.345,0.547,0.009
+24,Scars To Your Beautiful - Luca Schreiner Remix,Alessia Cara,edm,pop edm,happy,0.872,118,0.676,0.786,0.038
+25,Shit Creaks,um..,edm,pop edm,intense,0.87,143,0.306,0.783,0.001
+26,Raincoat - Ashworth Remix,Timeflies,edm,pop edm,chill,0.551,91,0.565,0.676,0.476
+27,Pesquisa no Google (feat. Henrique & Diego) - Ao Vivo,Turma do Pagode,edm,pop edm,happy,0.754,166,0.749,0.543,0.792
+28,Breathe Without,Nurko,edm,pop edm,intense,0.809,114,0.2,0.454,0.531
+29,Safety (feat. DJ Snake) - Dark Heart Burn Mix,GASHI,edm,pop edm,happy,0.859,140,0.557,0.586,0.016
+30,Better in Time,Leona Lewis,edm,pop edm,happy,0.7,164,0.549,0.584,0.512
+31,"Kick, Bass & Trance",Andrew Rayel,edm,progressive electro house,intense,0.925,140,0.092,0.66,0.001
+32,Skin,MIMO,edm,progressive electro house,happy,0.806,123,0.615,0.811,0.037
+33,Heavy on the Bacon,Fouk,edm,progressive electro house,happy,0.659,116,0.872,0.903,0.091
+34,Collide (feat. Rosi Golan),Vicetone,edm,progressive electro house,intense,0.701,124,0.288,0.613,0.031
+35,EYES SHUT,Declain,edm,progressive electro house,intense,0.878,128,0.194,0.55,0.004
+36,Savage Mode,KAZZANOVA,edm,progressive electro house,happy,0.969,150,0.66,0.592,0.004
+37,Adagio For Strings,Lucas & Steve,edm,progressive electro house,intense,0.793,127,0.04,0.349,0.001
+38,"Shakalaka (Steve Aoki, Deorro, MAKJ & Max Styler)",Steve Aoki,edm,progressive electro house,intense,0.966,109,0.479,0.451,0.024
+39,Burn Break Crash,Aanysa,edm,progressive electro house,intense,0.742,122,0.398,0.782,0.069
+40,Crashing Down,Aitor Blond,edm,progressive electro house,intense,0.811,128,0.1,0.592,0.096
+41,Design,Kevcody,latin,latin hip hop,chill,0.43,107,0.793,0.895,0.126
+42,Estamos Bien,Bad Bunny,latin,latin hip hop,melancholic,0.536,120,0.439,0.759,0.821
+43,"Promocional, Pt. 1 / God Level",Kaiser,latin,latin hip hop,happy,0.847,90,0.907,0.648,0.083
+44,Los Mate,Tego Calderon,latin,latin hip hop,chill,0.553,95,0.656,0.886,0.407
+45,47 - Remix,Anuel AA,latin,latin hip hop,intense,0.699,146,0.376,0.711,0.248
+46,War,Jay Sean,latin,latin hip hop,happy,0.654,78,0.571,0.376,0.435
+47,It's Automatic,Freestyle,latin,latin hip hop,happy,0.766,125,0.75,0.78,0.002
+48,Hasta Verla Sin Na (feat. Arcangel),Tony Dize,latin,latin hip hop,happy,0.793,94,0.683,0.738,0.088
+49,fallin',Idaly,latin,latin hip hop,chill,0.529,107,0.831,0.854,0.176
+50,Hipnosis,Zion & Lennox,latin,latin hip hop,happy,0.713,112,0.565,0.861,0.192
+51,Ho Wit It,Xcellence!,latin,latin pop,happy,0.775,128,0.697,0.883,0.088
+52,Joy,Teresa Jae,latin,latin pop,intense,0.672,160,0.375,0.654,0.022
+53,La Plata (feat. Lalo Ebratt),Juanes,latin,latin pop,happy,0.74,168,0.961,0.762,0.201
+54,Desconocidos,Mau y Ricky,latin,latin pop,happy,0.771,174,0.709,0.709,0.146
+55,El Perdedor,Maluma,latin,latin pop,happy,0.73,174,0.879,0.702,0.425
+56,Ruleta Rusa,Tony Dize,latin,latin pop,happy,0.853,120,0.676,0.705,0.092
+57,What You Say,Cabela and Schmitt,latin,latin pop,happy,0.672,145,0.579,0.614,0.029
+58,Me Gusta,Shakira,latin,latin pop,happy,0.696,92,0.775,0.775,0.056
+59,La Roca,Ivy Queen,latin,latin pop,happy,0.761,130,0.936,0.861,0.114
+60,Soledad,Loco Escrito,latin,latin pop,intense,0.689,95,0.498,0.754,0.164
+61,Lluvia,Genio,latin,reggaeton,happy,0.671,176,0.682,0.656,0.376
+62,Somos Panas,Dejota2021,latin,reggaeton,chill,0.481,101,0.609,0.857,0.222
+63,Sirena,Lionel Ferro,latin,reggaeton,happy,0.643,93,0.665,0.767,0.09
+64,Let's Go To My Crib,Voltio,latin,reggaeton,happy,0.65,94,0.639,0.753,0.012
+65,Mi Fanatica,Arcangel,latin,reggaeton,happy,0.691,93,0.612,0.875,0.045
+66,Yo Te Lo Dije,J Balvin,latin,reggaeton,happy,0.617,88,0.961,0.746,0.084
+67,Sandunga,Don Omar,latin,reggaeton,happy,0.855,95,0.798,0.857,0.094
+68,"Sol, Playa Y Arena","Tito ""El Bambino""",latin,reggaeton,happy,0.656,94,0.734,0.822,0.254
+69,PPP,Kevin Roldan,latin,reggaeton,happy,0.65,93,0.712,0.786,0.363
+70,Detonao,Lautaro LR,latin,reggaeton,melancholic,0.56,122,0.439,0.842,0.771
+71,La vie en rose,Zaz,latin,tropical,melancholic,0.507,168,0.392,0.57,0.797
+72,Regulate - Le Boeuf Remix,Warren G,latin,tropical,happy,0.729,112,0.731,0.85,0.07
+73,Home to Your Love,Maloma,latin,tropical,happy,0.796,123,0.699,0.653,0.064
+74,Deserter,Jones Meadow,latin,tropical,happy,0.873,120,0.795,0.711,0.016
+75,Palm Beach,Vicente Garcia,latin,tropical,chill,0.541,110,0.768,0.848,0.493
+76,Feel It,Dualities,latin,tropical,happy,0.877,122,0.681,0.844,0.102
+77,Dancer (Kygo Remix),Didrik Thulin,latin,tropical,chill,0.555,120,0.839,0.733,0.039
+78,Lovefool,Robin Knaak,latin,tropical,happy,0.817,120,0.533,0.773,0.025
+79,First Time Lovers,NLSN,latin,tropical,happy,0.74,108,0.581,0.76,0.059
+80,Easy Love,Sigala,latin,tropical,happy,0.942,124,0.65,0.68,0.175
+81,Rock My Heart - Radio Mix,Haddaway,pop,dance pop,happy,0.931,130,0.612,0.592,0.006
+82,Summer Lover (feat. Devin & Nile Rodgers) - Moguai Remix,Oliver Heldens,pop,dance pop,happy,0.93,126,0.639,0.809,0.271
+83,Flashback,Tim van Werd,pop,dance pop,intense,0.74,107,0.338,0.645,0.057
+84,As Far as Feelings Go,Alle Farben,pop,dance pop,happy,0.799,106,0.596,0.679,0.106
+85,Stay Young,Mike Perry,pop,dance pop,happy,0.713,90,0.559,0.572,0.075
+86,Circles,Post Malone,pop,dance pop,happy,0.758,120,0.534,0.704,0.233
+87,Your Love (HGHTS Remix),Chris Howland,pop,dance pop,happy,0.877,131,0.681,0.64,0.21
+88,Spirit Of Freedom,Dropgun,pop,dance pop,intense,0.914,128,0.225,0.438,0.021
+89,The Reason (Sean Cook Remix),Urban Rescue,pop,dance pop,chill,0.578,98,0.536,0.645,0.017
+90,Faded,John De Sohn,pop,dance pop,happy,0.859,150,0.554,0.561,0.014
+91,On The Floor - Radio Edit,Jennifer Lopez,pop,electropop,intense,0.686,130,0.444,0.758,0.085
+92,This Town (feat. Sasha Sloan),Kygo,pop,electropop,melancholic,0.449,148,0.487,0.736,0.506
+93,Blow Your Mind (Mwah),Dua Lipa,pop,electropop,intense,0.796,109,0.491,0.654,0.019
+94,Blood // Water,grandson,pop,electropop,happy,0.882,154,0.653,0.51,0.002
+95,Swan Song,Dua Lipa,pop,electropop,happy,0.821,188,0.509,0.588,0.006
+96,Without You (feat. Usher),David Guetta,pop,electropop,intense,0.614,128,0.402,0.608,0.227
+97,Tropic Love,Diviners,pop,electropop,intense,0.809,105,0.493,0.746,0.236
+98,Liquid Spirit - Claptone Remix,Gregory Porter,pop,electropop,intense,0.62,121,0.296,0.877,0.004
+99,Eye of the Tiger,Survivor,pop,electropop,chill,0.556,109,0.566,0.824,0.146
+100,Under Control,Calvin Harris,pop,electropop,happy,0.915,126,0.51,0.544,0.129
+101,HOLD YOU DOWN,X Ambassadors,pop,indie poptimism,intense,0.627,79,0.446,0.577,0.049
+102,Tomorrow,Dawson Hollow,pop,indie poptimism,happy,0.83,122,0.881,0.701,0.107
+103,Odeia,I See Colors,pop,indie poptimism,intense,0.63,140,0.159,0.743,0.019
+104,Gravity,Ralph,pop,indie poptimism,happy,0.668,118,0.765,0.754,0.366
+105,Still Beating,Mac DeMarco,pop,indie poptimism,melancholic,0.496,78,0.469,0.709,0.581
+106,lucid,slenderbodies,pop,indie poptimism,melancholic,0.536,102,0.362,0.716,0.847
+107,Shot At The Night,The Killers,pop,indie poptimism,intense,0.803,186,0.239,0.509,0.092
+108,Hark,Tom Misch,pop,indie poptimism,sad,0.451,128,0.186,0.746,0.181
+109,Erase Me - Main,Kid Cudi,pop,indie poptimism,happy,0.631,186,0.854,0.688,0.063
+110,Reality - Radio Edit,Lost Frequencies,pop,indie poptimism,happy,0.639,122,0.527,0.731,0.021
+111,Elastic Heart,Sia,pop,post-teen pop,intense,0.791,130,0.499,0.421,0.012
+112,Grace Kelly,MIKA,pop,post-teen pop,happy,0.828,122,0.669,0.675,0.024
+113,I Need Your Love (feat. Ellie Goulding),Calvin Harris,pop,post-teen pop,happy,0.869,125,0.58,0.695,0.41
+114,Hey There Delilah,Plain White T's,pop,post-teen pop,sad,0.291,104,0.298,0.657,0.872
+115,Favorite Part Of Me,Astrid S,pop,post-teen pop,melancholic,0.502,122,0.403,0.598,0.862
+116,One Last Time,Ariana Grande,pop,post-teen pop,sad,0.593,125,0.104,0.628,0.093
+117,Love Me Like You Do,Ellie Goulding,pop,post-teen pop,melancholic,0.597,95,0.324,0.489,0.27
+118,Applause,Lady Gaga,pop,post-teen pop,happy,0.78,140,0.738,0.669,0.026
+119,Bad Liar,Selena Gomez,pop,post-teen pop,chill,0.414,121,0.728,0.965,0.189
+120,Baby,Justin Bieber,pop,post-teen pop,happy,0.86,65,0.535,0.728,0.04
+121,Magic In The Hamptons (feat. Lil Yachty),Social House,r&b,hip pop,chill,0.479,96,0.803,0.769,0.66
+122,Free The Frail,JPEGMAFIA,r&b,hip pop,sad,0.509,154,0.264,0.553,0.515
+123,Shake It Off,Pickin' On Series,r&b,hip pop,happy,0.667,160,0.937,0.644,0.743
+124,Lucid Dreams,Juice WRLD,r&b,hip pop,sad,0.566,84,0.218,0.511,0.349
+125,Limitless,Sudan Archives,r&b,hip pop,melancholic,0.475,88,0.363,0.642,0.016
+126,1979,Darlingside,r&b,hip pop,intense,0.62,141,0.417,0.486,0.052
+127,La ragazza con il cuore di latta,Irama,r&b,hip pop,intense,0.687,100,0.305,0.612,0.279
+128,"Jumpin', Jumpin'",Destiny's Child,r&b,hip pop,happy,0.685,89,0.683,0.771,0.005
+129,Lately,Celeste,r&b,hip pop,melancholic,0.279,134,0.478,0.672,0.402
+130,In Those Jeans,Ginuwine,r&b,hip pop,melancholic,0.541,128,0.319,0.691,0.508
+131,Problem Solver (feat. Adad),Awon,r&b,neo soul,happy,0.668,178,0.612,0.582,0.049
+132,Hero,Frank Ocean,r&b,neo soul,intense,0.674,104,0.234,0.664,0.018
+133,Dance Tonight,Lucy Pearl,r&b,neo soul,chill,0.425,99,0.711,0.787,0.006
+134,One,Cleo Sol,r&b,neo soul,intense,0.822,153,0.386,0.432,0.067
+135,More Than A Woman (feat. Calvin) - Duet w/ Calvin,Angie Stone,r&b,neo soul,melancholic,0.404,132,0.473,0.685,0.445
+136,Stay,Mac Miller,r&b,neo soul,chill,0.561,134,0.55,0.742,0.566
+137,Like A Star,Corinne Bailey Rae,r&b,neo soul,sad,0.226,123,0.142,0.605,0.715
+138,See You Leave,RJD2,r&b,neo soul,happy,0.613,82,0.502,0.769,0.044
+139,I Remember,Ady Suleiman,r&b,neo soul,chill,0.558,172,0.768,0.695,0.507
+140,With Me,dvsn,r&b,neo soul,sad,0.466,110,0.245,0.771,0.031
+141,Spread My Wings,Troop,r&b,new jack swing,intense,0.844,97,0.481,0.637,0.168
+142,Honey Love,R. Kelly,r&b,new jack swing,chill,0.518,71,0.53,0.67,0.132
+143,Back To Life (However Do You Want Me) - Remastered,Soul II Soul,r&b,new jack swing,chill,0.569,101,0.636,0.813,0.047
+144,I Wanna Be Down,Brandy,r&b,new jack swing,chill,0.469,86,0.661,0.703,0.177
+145,Never Should've Let You Go,Hi-Five,r&b,new jack swing,chill,0.565,108,0.825,0.777,0.532
+146,Nobody (feat. Athena Cage) - Single Version; 2007 Remaster,Keith Sweat,r&b,new jack swing,melancholic,0.511,118,0.412,0.712,0.397
+147,Live and Learn,Joe Public,r&b,new jack swing,happy,0.891,107,0.654,0.745,0.087
+148,Part Time Lover,H-Town,r&b,new jack swing,happy,0.7,121,0.567,0.701,0.031
+149,"Any Time, Any Place",Janet Jackson,r&b,new jack swing,sad,0.232,129,0.207,0.571,0.604
+150,Make It Happen,Mariah Carey,r&b,new jack swing,chill,0.53,108,0.75,0.811,0.007
+151,"Hallelujah (feat. Buddy, A$AP Ferg & Wale)",Godfather of Harlem,r&b,urban contemporary,happy,0.897,75,0.858,0.698,0.654
+152,Can We Talk,Tevin Campbell,r&b,urban contemporary,happy,0.711,172,0.614,0.658,0.076
+153,I Can't Stop Loving You,Kem,r&b,urban contemporary,sad,0.297,141,0.123,0.702,0.724
+154,Roll Some Mo (feat. Ty Dolla $ign & Wale) - Remix,Lucky Daye,r&b,urban contemporary,happy,0.676,83,0.584,0.345,0.232
+155,Summers Over Interlude,Drake,r&b,urban contemporary,sad,0.255,132,0.243,0.698,0.405
+156,"Getting Late (From ""Queen & Slim: The Soundtrack"")",Syd,r&b,urban contemporary,sad,0.354,111,0.05,0.664,0.205
+157,Legacy (feat. Travis Scott & 21 Savage),Offset,r&b,urban contemporary,melancholic,0.513,128,0.344,0.844,0.178
+158,sobeautiful,Musiq Soulchild,r&b,urban contemporary,sad,0.562,134,0.21,0.689,0.066
+159,Beneath Your Beautiful,Labrinth,r&b,urban contemporary,sad,0.522,84,0.228,0.558,0.228
+160,Killing Me Softly With His Song - The Four Performance,Zhavia Ward,r&b,urban contemporary,happy,0.64,95,0.542,0.683,0.074
+161,Polaris,Ghostemane,rap,gangster rap,intense,0.772,110,0.029,0.649,0.717
+162,Ghostface Killers,21 Savage,rap,gangster rap,sad,0.436,83,0.243,0.782,0.331
+163,Ain't No Time,Future,rap,gangster rap,sad,0.587,145,0.135,0.842,0.009
+164,Ghetto Panorama,Anonym,rap,gangster rap,intense,0.769,90,0.264,0.68,0.099
+165,Hail Mary,Makaveli,rap,gangster rap,intense,0.637,82,0.364,0.654,0.158
+166,I Don't Need No Help - Glokknine Remix,NLE Choppa,rap,gangster rap,happy,0.747,165,0.622,0.788,0.02
+167,Rearranged,Killstation,rap,gangster rap,sad,0.44,208,0.132,0.512,0.004
+168,Slip On A Banana Clip,$uicideBoy$,rap,gangster rap,intense,0.788,140,0.465,0.755,0.036
+169,Illusions,Cypress Hill,rap,gangster rap,intense,0.827,182,0.408,0.547,0.007
+170,Criminology,Raekwon,rap,gangster rap,intense,0.726,97,0.464,0.712,0.017
+171,Asal Hustle,Naezy,rap,hip hop,happy,0.972,176,0.692,0.618,0.039
+172,Vibin' Out,Ruck P,rap,hip hop,melancholic,0.42,94,0.366,0.652,0.024
+173,Outlaw,Sidhu Moose Wala,rap,hip hop,intense,0.672,94,0.135,0.727,0.181
+174,Lord Willin',Logic,rap,hip hop,happy,0.85,170,0.567,0.648,0.123
+175,Never Lie (feat. Moneybagg Yo),Wiz Khalifa,rap,hip hop,intense,0.72,140,0.323,0.686,0.027
+176,Knuck If You Buck (feat. Lil' Scrappy),Crime Mob,rap,hip hop,happy,0.844,150,0.755,0.865,0.058
+177,Pray,Sam Smith,rap,hip hop,sad,0.448,88,0.224,0.637,0.224
+178,orange crunch,mommy,rap,hip hop,melancholic,0.234,63,0.492,0.722,0.801
+179,Smile Again,Green Assassin Dollar,rap,hip hop,chill,0.443,83,0.73,0.753,0.948
+180,Decisions,NAGASHI,rap,hip hop,sad,0.26,112,0.289,0.444,0.846
+181,40 Bandz,Ducko McFli,rap,southern hip hop,intense,0.607,130,0.288,0.729,0.036
+182,Candy Land,Tucka,rap,southern hip hop,happy,0.663,111,0.92,0.835,0.296
+183,APESHIT,The Carters,rap,southern hip hop,intense,0.785,160,0.377,0.706,0.013
+184,Glorious,Belly,rap,southern hip hop,chill,0.499,120,0.654,0.849,0.289
+185,It Was A Good Day,Ice Cube,rap,southern hip hop,happy,0.744,82,0.794,0.798,0.33
+186,Joker And The Thief,Wolfmother,rap,southern hip hop,intense,0.78,155,0.456,0.264,0.045
+187,Lose Your Soul,Jelly Roll,rap,southern hip hop,intense,0.849,85,0.468,0.616,0.451
+188,Ayo,Chris Brown,rap,southern hip hop,chill,0.563,98,0.682,0.823,0.04
+189,Roll Bounce,Drakeo the Ruler,rap,southern hip hop,sad,0.253,95,0.138,0.906,0.06
+190,Why We Thugs,Ice Cube,rap,southern hip hop,happy,0.604,98,0.663,0.755,0.382
+191,"Dillom: Bzrp Music Sessions, Vol. 9",Bizarrap,rap,trap,sad,0.546,100,0.232,0.904,0.02
+192,Death Note,GNAR,rap,trap,happy,0.709,174,0.537,0.762,0.141
+193,La Mentira - Remix,Brytiago,rap,trap,happy,0.695,94,0.51,0.811,0.395
+194,New Rules - Alison Wonderland Remix,Dua Lipa,rap,trap,sad,0.59,128,0.253,0.578,0.007
+195,Mucha Data,Cazzu,rap,trap,melancholic,0.522,135,0.327,0.695,0.192
+196,I Want U,Alison Wonderland,rap,trap,intense,0.829,140,0.384,0.606,0.002
+197,Break of Dawn - Duke & Jones Remix,Yellow Claw,rap,trap,intense,0.749,145,0.209,0.768,0.027
+198,Keep Working,Vaski,rap,trap,intense,0.682,100,0.267,0.701,0.028
+199,When You Need Me,Silent Child,rap,trap,intense,0.634,80,0.198,0.452,0.495
+200,Bassotto,Dark Polo Gang,rap,trap,chill,0.545,150,0.546,0.862,0.201
+201,Knock Me Down - Remastered,Red Hot Chili Peppers,rock,album rock,happy,0.969,124,0.585,0.56,0.002
+202,Tom Sawyer,Rush,rock,album rock,happy,0.901,88,0.666,0.536,0.001
+203,Soldier of Fortune,Deep Purple,rock,album rock,sad,0.395,133,0.243,0.456,0.359
+204,Look What You've Done,Jet,rock,album rock,melancholic,0.547,73,0.305,0.398,0.414
+205,The Stroke - Remastered,Billy Squier,rock,album rock,chill,0.591,91,0.8,0.67,0.62
+206,Yes I am,ONE OK ROCK,rock,album rock,intense,0.989,163,0.248,0.394,0.001
+207,Never Been Any Reason,Head East,rock,album rock,chill,0.447,135,0.894,0.517,0.001
+208,D'yer Mak'er - Remastered,Led Zeppelin,rock,album rock,happy,0.929,164,0.556,0.525,0.262
+209,Misty Night Cruising,Kiyotaka Sugiyama,rock,album rock,happy,0.977,147,0.519,0.587,0.035
+210,The Return Of The Giant Hogweed - Digital Remastered 2008,Genesis,rock,album rock,happy,0.736,131,0.5,0.405,0.026
+211,Livin' Thing,Electric Light Orchestra,rock,classic rock,intense,0.651,123,0.368,0.549,0.583
+212,Go Your Own Way,Fleetwood Mac,rock,classic rock,happy,0.812,136,0.823,0.597,0.022
+213,Lonely Is The Night - Remastered,Billy Squier,rock,classic rock,happy,0.803,85,0.672,0.347,0.209
+214,Wind of Change,Scorpions,rock,classic rock,intense,0.613,76,0.175,0.491,0.005
+215,Sandalan,6cyclemind,rock,classic rock,happy,0.84,140,0.783,0.484,0.104
+216,Dreams,Van Halen,rock,classic rock,happy,0.758,141,0.54,0.455,0.223
+217,Wheel in the Sky,Journey,rock,classic rock,intense,0.764,106,0.399,0.483,0.068
+218,Down On The Corner,Creedence Clearwater Revival,rock,classic rock,chill,0.468,108,0.85,0.855,0.424
+219,Tears of Love,TOSH,rock,classic rock,melancholic,0.482,76,0.424,0.578,0.034
+220,Feelin' Alright?,Traffic,rock,classic rock,chill,0.527,95,0.749,0.468,0.314
+221,The Safety of Disbelief,Light The Torch,rock,hard rock,intense,0.972,83,0.19,0.389,0.0
+222,Black Magic Woman - Single Version,Santana,rock,hard rock,chill,0.349,124,0.622,0.489,0.676
+223,Got Your Six,Five Finger Death Punch,rock,hard rock,intense,0.986,76,0.353,0.535,0.0
+224,I Fought the Law - Single Version,The Bobby Fuller Four,rock,hard rock,happy,0.804,149,0.962,0.593,0.105
+225,Bloodline,Northlane,rock,hard rock,intense,0.973,97,0.367,0.524,0.0
+226,Stupify,Disturbed,rock,hard rock,intense,0.939,98,0.422,0.597,0.001
+227,I'll Always Be Your Fool,JGS,rock,hard rock,chill,0.412,167,0.698,0.593,0.628
+228,Don't Stop Believing,Soul&Roll,rock,hard rock,sad,0.576,127,0.266,0.736,0.229
+229,Back Foot,Dinosaur Pile-Up,rock,hard rock,happy,0.922,160,0.844,0.547,0.006
+230,The Devil in I,Slipknot,rock,hard rock,intense,0.939,92,0.235,0.398,0.006
+231,"I Am The Highway - Live At Queen Elizabeth Theatre, Toronto, ON/2011",Chris Cornell,rock,permanent wave,sad,0.296,95,0.1,0.283,0.628
+232,Hallelujah,Jeff Buckley,rock,permanent wave,sad,0.136,97,0.083,0.323,0.931
+233,Wind In Her Hair,Motorama,rock,permanent wave,intense,0.749,126,0.186,0.32,0.03
+234,Do I Wanna Know?,Arctic Monkeys,rock,permanent wave,melancholic,0.532,85,0.405,0.548,0.186
+235,Leave It In My Dreams,The Voidz,rock,permanent wave,happy,0.746,119,0.614,0.6,0.023
+236,Cuz You're My Girl,Yung Heazy,rock,permanent wave,chill,0.304,82,0.544,0.416,0.141
+237,Hey Jealousy,Gin Blossoms,rock,permanent wave,intense,0.797,153,0.497,0.471,0.0
+238,But Not Tonight,Depeche Mode,rock,permanent wave,chill,0.516,132,0.745,0.715,0.741
+239,One Way Trigger,The Strokes,rock,permanent wave,happy,0.942,96,0.964,0.516,0.0
+240,Somebody - Remix,Depeche Mode,rock,permanent wave,melancholic,0.438,161,0.465,0.278,0.788

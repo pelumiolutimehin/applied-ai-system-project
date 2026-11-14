@@ -18,5 +18,9 @@ venv/
 # Secrets and local config
 .env
 
+# Raw source datasets; regenerate data/songs.csv with scripts/build_catalog.py
+data/spotify_songs.csv
+data/kaggle_song_dataset.csv
+
 # Run logs
 logs/
