@@ -9,6 +9,7 @@ You will implement the functions in recommender.py:
 - recommend_songs
 """
 
+from src.config import CATALOG_PATH
 from src.profile import ProfileError
 from src.recommender import load_songs, recommend_songs
 
@@ -33,7 +34,7 @@ def print_recommendations(recommendations) -> None:
 
 
 def main() -> None:
-    songs = load_songs("data/songs.csv") 
+    songs = load_songs(str(CATALOG_PATH))
 
     print(f'Loaded songs: {len(songs)}')
 

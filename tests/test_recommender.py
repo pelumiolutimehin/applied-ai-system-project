@@ -1,5 +1,6 @@
 import pytest
 
+from src.config import CATALOG_PATH
 from src.profile import ProfileError, UserProfile, normalize_label, validate_profile
 from src.recommender import load_songs, recommend_songs, score_song
 
@@ -145,7 +146,7 @@ def test_recommend_songs_rejects_bad_dict():
 # ---------- data loading ----------
 
 def test_load_songs_from_catalog():
-    songs = load_songs("data/songs.csv")
+    songs = load_songs(str(CATALOG_PATH))
     assert len(songs) > 0
     for s in songs:
         assert 0.0 <= s["energy"] <= 1.0

@@ -11,6 +11,8 @@ from typing import Optional, Set
 
 import pandas as pd
 
+from src.config import LATIN_EXCLUSIONS_PATH
+
 # Source playlist_genre -> catalog genre label.
 GENRES = {
     "pop": "pop",
@@ -73,7 +75,7 @@ def build_catalog(
     min_popularity: int = 30,
     max_per_artist: int = 2,
     seed: int = 42,
-    latin_exclusions_path: Optional[str] = "data/latin_exclusions.txt",
+    latin_exclusions_path: Optional[str] = str(LATIN_EXCLUSIONS_PATH),
 ) -> pd.DataFrame:
     """Sample a balanced, de-duplicated catalog and map it to the app schema.
 

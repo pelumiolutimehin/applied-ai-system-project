@@ -1,10 +1,17 @@
 """Central configuration: API key and model name, loaded from the environment / .env."""
 
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = ROOT_DIR / "data"
+CATALOG_PATH = DATA_DIR / "songs.csv"
+RAW_SOURCE_PATH = DATA_DIR / "spotify_songs.csv"
+LATIN_EXCLUSIONS_PATH = DATA_DIR / "latin_exclusions.txt"
+
+load_dotenv(ROOT_DIR / ".env")
 
 DEFAULT_MODEL = "gemini-2.5-flash"
 

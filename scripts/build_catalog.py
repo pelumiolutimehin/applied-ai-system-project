@@ -12,12 +12,13 @@ Usage (from the repo root):
 import argparse
 
 from src.catalog import build_catalog
+from src.config import CATALOG_PATH, RAW_SOURCE_PATH
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--source", default="data/spotify_songs.csv")
-    parser.add_argument("--out", default="data/songs.csv")
+    parser.add_argument("--source", default=str(RAW_SOURCE_PATH))
+    parser.add_argument("--out", default=str(CATALOG_PATH))
     parser.add_argument("--per-subgenre", type=int, default=10)
     args = parser.parse_args()
 

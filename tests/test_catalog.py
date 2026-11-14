@@ -1,5 +1,6 @@
 import pytest
 
+from src.config import CATALOG_PATH, LATIN_EXCLUSIONS_PATH
 from src.catalog import GENRES, derive_mood, is_latin_script, load_exclusions
 from src.recommender import load_songs
 
@@ -25,7 +26,7 @@ def test_derive_mood(energy, valence, expected):
 
 
 def test_catalog_schema_and_ranges():
-    songs = load_songs("data/songs.csv")
+    songs = load_songs(str(CATALOG_PATH))
     assert len(songs) >= 150
     ids = [s["id"] for s in songs]
     assert len(ids) == len(set(ids))
@@ -36,16 +37,16 @@ def test_catalog_schema_and_ranges():
 
 
 def test_catalog_has_expected_genres_and_no_duplicate_songs():
-    songs = load_songs("data/songs.csv")
+    songs = load_songs(str(CATALOG_PATH))
     assert {s["genre"] for s in songs} == set(GENRES.values())
     keys = [(s["title"].lower(), s["artist"].lower()) for s in songs]
     assert len(keys) == len(set(keys))
 
 
 def test_latin_exclusions_are_applied_only_to_latin():
-    excluded = load_exclusions("data/latin_exclusions.txt")
+    excluded = load_exclusions(str(LATIN_EXCLUSIONS_PATH))
     assert excluded  # the list is not empty
-    for s in load_songs("data/songs.csv"):
+    for s in load_songs(str(CATALOG_PATH)):
         if s["genre"] == "latin":
             assert s["artist"].lower() not in excluded
 
@@ -59,7 +60,7 @@ def test_load_exclusions_ignores_comments_and_blanks(tmp_path):
 
 
 def test_catalog_moods_match_derivation():
-    for s in load_songs("data/songs.csv"):
+    for s in load_songs(str(CATALOG_PATH)):
         assert s["mood"] == derive_mood(s["energy"], s["valence"])
 
 
