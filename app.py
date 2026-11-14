@@ -4,14 +4,11 @@ Run from the repo root:
     streamlit run app.py
 """
 
-from pathlib import Path
-
 import streamlit as st
 
+from src.config import CATALOG_PATH
 from src.profile import ProfileError, UserProfile, validate_profile
 from src.recommender import load_songs, recommend_songs
-
-CATALOG_PATH = Path(__file__).parent / "data" / "songs.csv"
 
 
 @st.cache_data
