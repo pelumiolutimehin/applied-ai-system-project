@@ -6,6 +6,7 @@ edm, latin). Latin is kept because it is a major genre in the US market.
 """
 
 import os
+import unicodedata
 from typing import Optional, Set
 
 import pandas as pd
@@ -46,6 +47,17 @@ def derive_mood(energy: float, valence: float) -> str:
     return "sad" if valence < VALENCE_SAD else "melancholic"
 
 
+def is_latin_script(text: str) -> bool:
+    """True if every letter is in the Latin script (accents allowed, e.g. "Beyonce" or "Calderon").
+
+    Digits, spaces and punctuation are ignored. Rejects Cyrillic, Hangul, Kana, Arabic, etc.
+    """
+    for ch in text:
+        if ch.isalpha() and not unicodedata.name(ch, "").startswith("LATIN"):
+            return False
+    return True
+
+
 def load_exclusions(path: Optional[str]) -> Set[str]:
     """Read one artist name per line (lowercased); blank lines and '#' comments are ignored."""
     if not path or not os.path.exists(path):
@@ -66,7 +78,7 @@ def build_catalog(
     """Sample a balanced, de-duplicated catalog and map it to the app schema.
 
     Samples the same number of songs from every subgenre so each genre is balanced and
-    varied. Excludes non-ASCII titles/artists, low-popularity tracks and remixes of the
+    varied. Excludes titles/artists in non-Latin scripts (accents are kept), low-popularity tracks and remixes of the
     same song (one copy per track id and per title+artist).
     """
     df = pd.read_csv(source_csv)
@@ -74,7 +86,7 @@ def build_catalog(
     df = df.dropna(subset=["track_name", "track_artist"])
     df = df[df["playlist_genre"].isin(GENRES)]
     df = df[df["track_popularity"] >= min_popularity]
-    df = df[df["track_name"].map(str.isascii) & df["track_artist"].map(str.isascii)]
+    df = df[df["track_name"].map(is_latin_script) & df["track_artist"].map(is_latin_script)]
 
     df["title"] = df["track_name"].str.strip()
     df["artist"] = df["track_artist"].str.strip()

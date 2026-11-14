@@ -1,6 +1,6 @@
 import pytest
 
-from src.catalog import GENRES, derive_mood, load_exclusions
+from src.catalog import GENRES, derive_mood, is_latin_script, load_exclusions
 from src.recommender import load_songs
 
 
@@ -61,3 +61,24 @@ def test_load_exclusions_ignores_comments_and_blanks(tmp_path):
 def test_catalog_moods_match_derivation():
     for s in load_songs("data/songs.csv"):
         assert s["mood"] == derive_mood(s["energy"], s["valence"])
+
+
+@pytest.mark.parametrize(
+    "text, expected",
+    [
+        ("Beyoncé", True),
+        ("Tego Calderón", True),
+        ("Sigur Rós", True),
+        ("Don't Stop (feat. Artist) - Radio Edit 2019", True),
+        ("21 Savage", True),
+        ("ONE OK ROCK", True),
+        ("Дима Билан", False),
+        ("방탄소년단", False),
+        ("宇多田ヒカル", False),
+        ("أم كلثوم", False),
+        ("Mixed Дима", False),
+        ("", True),
+    ],
+)
+def test_is_latin_script(text, expected):
+    assert is_latin_script(text) is expected
