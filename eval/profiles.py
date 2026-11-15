@@ -57,14 +57,20 @@ MALFORMED_PROFILES = {
 ALL_VALID_PROFILES = {**NORMAL_PROFILES, **TRICKY_PROFILES}
 
 
-def _case(text, genre, moods, energy=None, valence=None, acoustic=None):
+def _case(text, genre, moods, energy=None, valence=None, acoustic=None, acceptable_genres=()):
     """A labeled free-text request.
 
-    genre: expected genre, or None when the request names no genre (the parser should then
-    not invent one). moods: acceptable moods. energy/valence/acoustic: acceptable (lo, hi).
+    genre: expected genre, or None when the request names no genre.
+    acceptable_genres: only for no-genre requests. Genres a reasonable listener could accept
+    for that activity. The parser is graded in three tiers on these requests:
+      ideal      - returned no genre at all
+      acceptable - returned a genre in this set
+      wrong      - returned any other genre
+    moods: acceptable moods. energy/valence/acoustic: acceptable (lo, hi).
     """
     return {"text": text, "genre": genre, "moods": set(moods),
-            "energy": energy, "valence": valence, "acoustic": acoustic}
+            "energy": energy, "valence": valence, "acoustic": acoustic,
+            "acceptable_genres": set(acceptable_genres)}
 
 
 # Requests that name a genre.
@@ -80,13 +86,20 @@ NAMED_GENRE_CASES = [
           energy=(0, 0.5), acoustic=(0.5, 1)),
 ]
 
-# Requests with a mood or activity but no genre. A good parser should not invent a genre.
+# Requests with a mood or activity but no genre. The ideal answer is no genre; a genre that
+# fits the activity is acceptable; anything else is wrong. The acceptable sets are judgment
+# calls, so edit them here if you disagree.
 NO_GENRE_CASES = [
-    _case("something to help me focus while studying", None, {"chill"}, energy=(0, 0.5)),
-    _case("music for a sad rainy day", None, {"sad", "melancholic"}, energy=(0, 0.5), valence=(0, 0.45)),
-    _case("high energy workout music", None, {"happy", "intense"}, energy=(0.7, 1)),
-    _case("background music for dinner with friends", None, {"chill"}, energy=(0, 0.6)),
-    _case("songs to dance to", None, {"happy"}, energy=(0.6, 1)),
+    _case("something to help me focus while studying", None, {"chill"}, energy=(0, 0.5),
+          acceptable_genres={"r&b", "pop"}),
+    _case("music for a sad rainy day", None, {"sad", "melancholic"}, energy=(0, 0.5), valence=(0, 0.45),
+          acceptable_genres={"r&b", "pop"}),
+    _case("high energy workout music", None, {"happy", "intense"}, energy=(0.7, 1),
+          acceptable_genres={"edm", "rock", "rap"}),
+    _case("background music for dinner with friends", None, {"chill"}, energy=(0, 0.6),
+          acceptable_genres={"pop", "r&b", "latin"}),
+    _case("songs to dance to", None, {"happy"}, energy=(0.6, 1),
+          acceptable_genres={"edm", "pop", "latin"}),
 ]
 
 # Off-topic or hostile input. The parser should refuse all of these.

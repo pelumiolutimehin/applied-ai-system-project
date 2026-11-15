@@ -63,9 +63,11 @@ def print_report(report: dict) -> None:
     if "parser" in report:
         p, o, c = report["parser"], report["off_topic"], report["consistency"]
         print(f"\nParser ({report['model']}, {p['cases']} labeled requests)")
-        for key in ("parse_success_rate", "named_genre_accuracy", "genre_invented_rate", "mood_accuracy",
-                    "numeric_in_range_rate", "mood_numbers_coherence", "overall_case_pass_rate"):
-            print(f"  {key:<26}: {p[key]}")
+        for key in ("parse_success_rate", "named_genre_accuracy", "genre_invented_rate",
+                    "genre_indefensible_rate", "mood_accuracy", "numeric_in_range_rate",
+                    "mood_numbers_coherence", "overall_case_pass_rate", "overall_case_pass_rate_strict"):
+            print(f"  {key:<30}: {p[key]}")
+        print(f"  {'no-genre tiers':<30}: {p['no_genre_tiers']}")
         print(f"  off-topic rejected         : {o['rejection_rate']}  (accepted: {o['accepted']})")
         print(f"  identical across {c['runs']} runs   : {c['exact_identical_rate']} exact, "
               f"{c['within_tolerance_rate']} within {c['tolerance']}  (unstable: {c['unstable']})")
