@@ -42,6 +42,8 @@ def test_app_updates_when_preferences_change():
 
 # ---------- free-text requests (Gemini mocked) ----------
 
+WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten"}
+
 ROCK_REPLY = json.dumps({
     "favorite_genre": "rock", "favorite_mood": "intense",
     "target_energy": 0.95, "target_valence": 0.3, "target_acousticness": 0.05,
@@ -66,7 +68,7 @@ def fake_llm(monkeypatch):
             return reply["value"]
         explain_calls.append(user_text)
         ranks = [int(line.split()[1].rstrip(":")) for line in user_text.splitlines() if line.startswith("SONG ")]
-        return json.dumps({"explanations": [{"rank": r, "text": f"Because reason {r}."} for r in ranks]})
+        return json.dumps({"explanations": [{"rank": r, "text": f"Because of reason {WORDS[r]}."} for r in ranks]})
 
     monkeypatch.setattr(llm_parser, "call_gemini", fake)
     fake.calls, fake.explain_calls, fake.reply = parser_calls, explain_calls, reply
@@ -131,7 +133,7 @@ def test_explanations_are_shown_with_their_source_notes(fake_llm):
     assert not at.exception
     assert len(fake_llm.explain_calls) == 1
     text = expander_text(at)
-    assert "Because reason 1." in text and "Because reason 5." in text
+    assert "Because of reason one." in text and "Because of reason five." in text
     assert "AI-written from these notes: genre:" in text
 
 
@@ -141,7 +143,7 @@ def test_toggle_off_skips_explanation_call(fake_llm):
     at.sidebar.checkbox(key="explain").uncheck().run()
     at.sidebar.slider(key="k").set_value(4).run()
     assert fake_llm.explain_calls == []
-    assert "Because reason" not in expander_text(at)
+    assert "Because of reason" not in expander_text(at)
     assert len(at.subheader) == 4
 
 
@@ -169,3 +171,61 @@ def test_checkbox_is_disabled_without_api_key():
     at = run_app()
     assert at.sidebar.checkbox(key="explain").disabled
     assert not at.sidebar.checkbox(key="explain").value
+
+
+# ---------- confidence and logging ----------
+
+def all_text(at):
+    return " ".join(m.value for m in at.markdown) + " " + " ".join(c.value for c in at.caption)
+
+
+def test_confidence_is_shown_with_its_explanation():
+    at = run_app()
+    assert not at.exception
+    assert "Confidence:" in all_text(at)
+    assert any("How is confidence calculated?" in e.label for e in at.expander)
+
+
+def test_weak_results_show_a_low_confidence_warning():
+    at = run_app()
+    # an energetic edm fan who also wants a sad, acoustic, quiet sound: no song fits well
+    at.sidebar.selectbox(key="genre").select("edm")
+    at.sidebar.selectbox(key="mood").select("sad")
+    at.sidebar.slider(key="energy").set_value(1.0)
+    at.sidebar.slider(key="valence").set_value(0.0)
+    at.sidebar.slider(key="acoustic").set_value(1.0)
+    at.run()
+    assert not at.exception
+    assert "Confidence: low" in all_text(at)
+    assert any("Low confidence" in w.value for w in at.warning)
+
+
+def test_each_distinct_run_is_logged_once_not_once_per_rerun(tmp_path):
+    from src import runlog
+    at = run_app()
+    at.run()
+    at.run()
+    assert len(runlog.read_log()) == 1            # reruns with identical inputs are not re-logged
+    at.sidebar.slider(key="k").set_value(4).run()
+    assert len(runlog.read_log()) == 2            # a changed input is a new run
+
+
+def test_log_records_source_and_confidence(fake_llm):
+    from src import runlog
+    at = run_app()
+    at.text_input(key="request").input("loud rock").run()
+    record = runlog.read_log()[-1]
+    assert record["source"] == "text" and record["request"] == "loud rock"
+    assert record["profile"]["favorite_genre"] == "rock"
+    assert record["confidence"]["level"] in {"high", "medium", "low"}
+    assert len(record["explanations"]) == 5
+
+
+def test_failed_text_request_is_logged_as_a_fallback(fake_llm):
+    from src import runlog
+    fake_llm.reply["value"] = "{}"
+    at = run_app()
+    at.text_input(key="request").input("what is the capital of France").run()
+    record = runlog.read_log()[-1]
+    assert record["source"] == "sliders_fallback"
+    assert "couldn't find" in record["parse_error"]

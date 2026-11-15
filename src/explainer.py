@@ -13,6 +13,7 @@ from typing import Callable, Dict, List, Optional, Sequence, Tuple
 from src import config, llm_parser
 from src.llm_parser import Generate, extract_json
 from src.profile import UserProfile
+from src.reliability import Vocabulary, check_faithfulness
 from src.retriever import Note, Retriever
 
 MAX_EXPLANATION_CHARS = 400
@@ -23,6 +24,12 @@ class Explanation:
     text: str
     source: str  # "llm" or "fallback"
     notes_used: List[str] = field(default_factory=list)  # ids of the notes the model was shown
+    # Result of the faithfulness check on the model's text: True = passed, False = rejected and
+    # replaced by the fallback sentence, None = the model wrote nothing usable (check not run).
+    faithful: Optional[bool] = None
+    problems: List[str] = field(default_factory=list)  # why a rejected text was rejected
+    rejected_text: Optional[str] = None  # what the model wrote, kept so a human can audit the rejection
+    error: Optional[str] = None  # why no model text was used, e.g. "ServerError 503" (no message: it may hold secrets)
 
 
 def matched_features(reasons: Sequence[str]) -> List[str]:
@@ -116,13 +123,19 @@ def explain_recommendations(
     retries: int = 1,
     sleep: Callable[[float], None] = time.sleep,
 ) -> List[Explanation]:
-    """Return one Explanation per recommendation, in order. Never raises."""
+    """Return one Explanation per recommendation, in order. Never raises.
+
+    Each model-written text is checked for faithfulness; a text that fails is replaced by the
+    deterministic fallback sentence and the reasons are kept in Explanation.problems.
+    """
     reasons_per_song = [rec[2].split(", ") for rec in recommendations]
     notes_per_song = [retriever.notes_for_song(rec[0]) for rec in recommendations]
     ids_per_song = [[n.id for n in notes] for notes in notes_per_song]
 
-    def fallback(i: int) -> Explanation:
-        return Explanation(fallback_explanation(reasons_per_song[i]), "fallback", [])
+    def fallback(i: int, faithful: Optional[bool] = None, problems: Optional[List[str]] = None,
+                 rejected_text: Optional[str] = None, error: Optional[str] = None) -> Explanation:
+        return Explanation(fallback_explanation(reasons_per_song[i]), "fallback", [], faithful,
+                           problems or [], rejected_text, error)
 
     if not recommendations:
         return []
@@ -136,15 +149,27 @@ def explain_recommendations(
     user_message = build_user_message(profile, recommendations, notes_per_song, retriever.get("feature"))
 
     texts: Dict[int, str] = {}
+    failure: Optional[str] = None
     for attempt in range(retries + 1):
         try:
             texts = parse_explanations(generate(system_prompt, user_message), len(recommendations))
+            failure = None
             break
-        except Exception:  # API, network, quota or unreadable reply: retry once, then fall back
+        except Exception as err:  # API, network, quota or unreadable reply: retry once, then fall back
+            code = getattr(err, "code", None)
+            failure = f"{type(err).__name__} {code}" if code else type(err).__name__
             if attempt < retries:
                 sleep(1.0)
 
-    return [
-        Explanation(texts[i + 1], "llm", ids_per_song[i]) if (i + 1) in texts else fallback(i)
-        for i in range(len(recommendations))
-    ]
+    vocab = Vocabulary.from_notes(retriever.notes)
+    results = []
+    for i, (song, _score, _reasons) in enumerate(recommendations):
+        if (i + 1) not in texts:
+            results.append(fallback(i, error=failure or "no usable text for this song"))
+            continue
+        verdict = check_faithfulness(texts[i + 1], song, profile, notes_per_song[i], vocab)
+        if verdict.passed:
+            results.append(Explanation(texts[i + 1], "llm", ids_per_song[i], True))
+        else:
+            results.append(fallback(i, faithful=False, problems=verdict.problems, rejected_text=texts[i + 1]))
+    return results

@@ -7,7 +7,11 @@ from typing import Callable, Dict, Iterable, List, Optional, Sequence
 from src.catalog import derive_mood
 from src.llm_parser import Generate, ParseError, parse_request
 from src.profile import ProfileError, UserProfile, validate_profile
+from src.explainer import explain_recommendations
 from src.recommender import recommend_songs
+from src.reliability import Vocabulary, assess_confidence, check_faithfulness
+
+API_FAILURE_PREFIX = "The language model request failed"  # from llm_parser.parse_request
 
 SWEEP_PRESETS = {  # (energy, valence, acousticness)
     "calm": (0.2, 0.4, 0.8),
@@ -74,10 +78,16 @@ def run_parser(
         if i and delay:
             sleep(delay)
         try:
-            outcomes.append({"text": text, "profile": parse_request(text, genres, moods, generate=generate), "error": None})
+            outcomes.append({"text": text, "profile": parse_request(text, genres, moods, generate=generate),
+                             "error": None, "api_error": False})
         except ParseError as err:
-            outcomes.append({"text": text, "profile": None, "error": str(err)})
+            outcomes.append({"text": text, "profile": None, "error": str(err),
+                             "api_error": str(err).startswith(API_FAILURE_PREFIX)})
     return outcomes
+
+
+def count_api_errors(*outcome_lists: Sequence[Dict]) -> int:
+    return sum(1 for outcomes in outcome_lists for o in outcomes if o.get("api_error"))
 
 
 def summarize_parser(cases: Sequence[Dict], outcomes: Sequence[Dict]) -> Dict:
@@ -142,8 +152,12 @@ def consistency(texts: Sequence[str], runs: Sequence[Sequence[Dict]], tolerance:
     """
     exact = close = 0
     unstable = []
+    skipped = []
     worst = 0.0
     for i, text in enumerate(texts):
+        if any(run[i].get("api_error") for run in runs):
+            skipped.append(text)  # an API failure says nothing about whether the model is consistent
+            continue
         keys = [_profile_key(run[i]) for run in runs]
         if all(k == keys[0] for k in keys):
             exact += 1
@@ -155,10 +169,12 @@ def consistency(texts: Sequence[str], runs: Sequence[Sequence[Dict]], tolerance:
             worst = max(worst, *[d for d in deviations if d is not None])
         else:
             unstable.append(text)
+    judged = len(texts) - len(skipped)
     return {
-        "texts": len(texts), "runs": len(runs), "tolerance": tolerance,
-        "exact_identical_rate": _rate(exact, len(texts)),
-        "within_tolerance_rate": _rate(close, len(texts)),
+        "texts": len(texts), "judged": judged, "skipped_api_errors": skipped,
+        "runs": len(runs), "tolerance": tolerance,
+        "exact_identical_rate": _rate(exact, judged),
+        "within_tolerance_rate": _rate(close, judged),
         "max_numeric_deviation_seen": round(worst, 3),
         "unstable": unstable,
     }
@@ -226,4 +242,138 @@ def ranking_metrics(songs: Sequence[Dict], profiles: Sequence[Dict], k: int = 5)
         "recommended_genre_share": {g: _rate(c, total) for g, c in sorted(genre_of_recs.items())},
         "catalog_genre_share": {g: _rate(c, len(songs)) for g, c in sorted(Counter(s["genre"] for s in songs).items())},
         "catalog_mood_share": {m: _rate(c, len(songs)) for m, c in sorted(Counter(s["mood"] for s in songs).items())},
+    }
+
+
+# ---------- confidence and explanation faithfulness ----------
+
+def confidence_check(songs: Sequence[Dict], profiles: Dict[str, Dict], expected: Dict[str, set], k: int = 5) -> Dict:
+    """Score each profile and compare the level with what a sensible score should give."""
+    genres = {s["genre"] for s in songs}
+    moods = {s["mood"] for s in songs}
+    rows = {}
+    for name, raw in profiles.items():
+        profile = validate_profile(raw)
+        report = assess_confidence(profile, recommend_songs(profile, songs, k=k), genres, moods)
+        want = expected.get(name)
+        rows[name] = {"score": report.score, "level": report.level,
+                      "expected": sorted(want) if want else None,
+                      "as_expected": None if want is None else report.level in want}
+    judged = [r for r in rows.values() if r["as_expected"] is not None]
+    return {
+        "profiles": len(rows),
+        "as_expected_rate": _rate(sum(1 for r in judged if r["as_expected"]), len(judged)),
+        "per_profile": rows,
+    }
+
+
+def explanation_faithfulness(
+    songs: Sequence[Dict],
+    profiles: Dict[str, Dict],
+    retriever,
+    generate: Optional[Generate] = None,
+    k: int = 5,
+    delay: float = 0.0,
+    sleep: Callable[[float], None] = time.sleep,
+) -> Dict:
+    """Generate real explanations for each profile and count how many the checker rejects.
+
+    rejected_examples keeps the model's raw text and the reasons so a person can judge whether
+    each rejection was right. The checker is a heuristic, so that review matters.
+    """
+    llm = rejected = unusable = 0
+    failures: Counter = Counter()
+    reasons: Counter = Counter()
+    examples = []
+    samples = []
+    for i, (name, raw) in enumerate(profiles.items()):
+        if i and delay:
+            sleep(delay)
+        profile = validate_profile(raw)
+        recs = recommend_songs(profile, songs, k=k)
+        for rec, exp in zip(recs, explain_recommendations(profile, recs, retriever, generate=generate)):
+            if exp.source == "llm":
+                llm += 1
+                samples.append({"profile": name, "song_id": rec[0]["id"], "text": exp.text})
+            elif exp.faithful is False:
+                rejected += 1
+                for problem in exp.problems:
+                    reasons[problem.split(",")[0][:60]] += 1
+                examples.append({"profile": name, "song": rec[0]["title"], "text": exp.rejected_text,
+                                 "problems": exp.problems})
+            else:
+                unusable += 1
+                failures[exp.error or "unknown"] += 1
+    checked = llm + rejected
+    return {
+        "explanations": llm + rejected + unusable,
+        "passed_check": llm,
+        "rejected": rejected,
+        "no_usable_text": unusable,
+        "no_usable_text_reasons": dict(failures),
+        "rejection_rate": _rate(rejected, checked),
+        "rejected_examples": examples,
+        "samples": samples,  # every accepted text, kept for the mutation test and for human review
+    }
+
+
+# ---------- validating the checker itself ----------
+
+def _unused(candidates: Sequence[str], forbidden_text: str, exclude: Iterable[str]) -> Optional[str]:
+    """First candidate that is neither excluded nor mentioned in forbidden_text."""
+    skip = {x.lower() for x in exclude if x}
+    for word in candidates:
+        if word.lower() not in skip and word.lower() not in forbidden_text.lower():
+            return word
+    return None
+
+
+def _mutations(song: Dict, profile, notes_text: str, genres: Sequence[str], moods: Sequence[str]) -> Dict[str, Optional[str]]:
+    """Sentences that would make a faithful explanation false. None = does not apply to this song."""
+    other_genre = _unused(genres, notes_text, [song["genre"], song.get("subgenre"), profile.favorite_genre])
+    other_mood = _unused(moods, notes_text, [song["mood"]])
+    listener_genre = profile.favorite_genre
+    return {
+        "invented_genre": f" This is a typical {other_genre} track." if other_genre else None,
+        "wrong_mood": f" Its {other_mood} feel stands out." if other_mood else None,
+        "made_up_number": " It scores 0.97 overall.",
+        "false_acoustic": " Its acoustic warmth shines." if song["acousticness"] < 0.5 else None,
+        "false_energy": " A calm, quiet listen." if song["energy"] >= 0.6 else " A loud, high-energy blast.",
+        "false_genre_match": (f" Perfect for your {listener_genre} taste."
+                              if listener_genre and listener_genre != song["genre"] else None),
+    }
+
+
+def checker_mutation_test(samples: Sequence[Dict], songs: Sequence[Dict], profiles: Dict[str, Dict], retriever) -> Dict:
+    """Corrupt real accepted explanations on purpose and measure how many corruptions are caught.
+
+    Also reports how many of the untouched originals the checker flags (false alarms). The
+    corruptions are blunt, one false sentence each, so recall here shows the mechanism works and
+    says nothing about subtle errors.
+    """
+    by_id = {s["id"]: s for s in songs}
+    vocab = Vocabulary.from_notes(retriever.notes)
+    genres, moods = sorted(vocab.genres), sorted(vocab.moods)
+    applied: Counter = Counter()
+    caught: Counter = Counter()
+    false_alarms = 0
+    for sample in samples:
+        song = by_id[sample["song_id"]]
+        profile = validate_profile(profiles[sample["profile"]])
+        notes = retriever.notes_for_song(song)
+        notes_text = " ".join(f"{n.name} {n.text}" for n in notes)
+        if not check_faithfulness(sample["text"], song, profile, notes, vocab).passed:
+            false_alarms += 1
+        for name, addition in _mutations(song, profile, notes_text, genres, moods).items():
+            if addition is None:
+                continue
+            applied[name] += 1
+            if not check_faithfulness(sample["text"] + addition, song, profile, notes, vocab).passed:
+                caught[name] += 1
+    return {
+        "originals": len(samples),
+        "false_alarm_rate": _rate(false_alarms, len(samples)),
+        "overall_recall": _rate(sum(caught.values()), sum(applied.values())),
+        "per_mutation": {name: {"applied": applied[name], "caught": caught[name],
+                                "recall": _rate(caught[name], applied[name])} for name in sorted(applied)},
     }
