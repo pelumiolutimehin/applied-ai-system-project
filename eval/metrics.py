@@ -26,15 +26,24 @@ def in_range(value: float, bounds) -> bool:
 
 # ---------- parser ----------
 
+def genre_tier_for(genre: Optional[str], acceptable: Iterable[str]) -> str:
+    """Grade the genre a parser returned for a request that named none."""
+    if genre is None:
+        return "ideal"
+    return "acceptable" if genre in set(acceptable) else "wrong"
+
+
 def score_parser_case(case: Dict, profile: Optional[UserProfile]) -> Dict:
     """Compare one parsed profile with the labeled expectations. profile=None means it was refused."""
     if profile is None:
-        return {"parsed": False, "genre_ok": False, "genre_invented": None, "mood_ok": False,
-                "numeric_ok": False, "coherent": None, "passed": False}
+        return {"parsed": False, "genre_ok": False, "genre_invented": None, "genre_tier": None,
+                "mood_ok": False, "numeric_ok": False, "coherent": None,
+                "passed": False, "passed_strict": False}
 
     named = case["genre"] is not None
     genre_ok = profile.favorite_genre == case["genre"] if named else None
     genre_invented = (profile.favorite_genre is not None) if not named else None
+    genre_tier = None if named else genre_tier_for(profile.favorite_genre, case["acceptable_genres"])
     mood_ok = profile.favorite_mood in case["moods"]
     numeric_ok = (
         in_range(profile.target_energy, case["energy"])
@@ -42,9 +51,13 @@ def score_parser_case(case: Dict, profile: Optional[UserProfile]) -> Dict:
         and in_range(profile.target_acousticness, case["acoustic"])
     )
     coherent = profile.favorite_mood == derive_mood(profile.target_energy, profile.target_valence)
-    passed = (genre_ok if named else not genre_invented) and mood_ok and numeric_ok
-    return {"parsed": True, "genre_ok": genre_ok, "genre_invented": genre_invented, "mood_ok": mood_ok,
-            "numeric_ok": numeric_ok, "coherent": coherent, "passed": bool(passed)}
+    rest_ok = mood_ok and numeric_ok
+    # tiered: no genre or an acceptable genre passes. strict: any invented genre fails.
+    passed = (genre_ok if named else genre_tier in ("ideal", "acceptable")) and rest_ok
+    passed_strict = (genre_ok if named else not genre_invented) and rest_ok
+    return {"parsed": True, "genre_ok": genre_ok, "genre_invented": genre_invented, "genre_tier": genre_tier,
+            "mood_ok": mood_ok, "numeric_ok": numeric_ok, "coherent": coherent,
+            "passed": bool(passed), "passed_strict": bool(passed_strict)}
 
 
 def run_parser(
@@ -74,15 +87,19 @@ def summarize_parser(cases: Sequence[Dict], outcomes: Sequence[Dict]) -> Dict:
     parsed = [s for s in scored if s["parsed"]]
     named = [s for c, s in zip(cases, scored) if c["genre"] is not None]
     unnamed_parsed = [s for c, s in zip(cases, scored) if c["genre"] is None and s["parsed"]]
+    tiers = Counter(s["genre_tier"] for s in unnamed_parsed)
     return {
         "cases": n,
         "parse_success_rate": _rate(len(parsed), n),
         "named_genre_accuracy": _rate(sum(1 for s in named if s["genre_ok"]), len(named)),
         "genre_invented_rate": _rate(sum(1 for s in unnamed_parsed if s["genre_invented"]), len(unnamed_parsed)),
+        "genre_indefensible_rate": _rate(tiers["wrong"], len(unnamed_parsed)),
+        "no_genre_tiers": {t: tiers[t] for t in ("ideal", "acceptable", "wrong")},
         "mood_accuracy": _rate(sum(1 for s in scored if s["mood_ok"]), n),
         "numeric_in_range_rate": _rate(sum(1 for s in scored if s["numeric_ok"]), n),
         "mood_numbers_coherence": _rate(sum(1 for s in parsed if s["coherent"]), len(parsed)),
         "overall_case_pass_rate": _rate(sum(1 for s in scored if s["passed"]), n),
+        "overall_case_pass_rate_strict": _rate(sum(1 for s in scored if s["passed_strict"]), n),
         "per_case": [
             {"text": c["text"], **s,
              "profile": o["profile"].to_dict() if o["profile"] else None, "error": o["error"]}

@@ -1,0 +1,341 @@
+{
+  "date": "2026-11-14",
+  "model": "gemini-3.5-flash-lite",
+  "catalog_size": 240,
+  "guardrail": {
+    "malformed_rejected_rate": 1.0,
+    "valid_accepted_rate": 1.0,
+    "wrongly_accepted": [],
+    "wrongly_rejected": []
+  },
+  "ranking": {
+    "profiles": 90,
+    "k": 5,
+    "catalog_size": 240,
+    "coverage": 0.721,
+    "never_recommended": 67,
+    "top10_songs_share_of_slots": 0.184,
+    "max_artist_share_of_slots": 0.029,
+    "genre_match_rate": 0.773,
+    "mood_match_rate": 0.94,
+    "recommended_genre_share": {
+      "edm": 0.096,
+      "latin": 0.12,
+      "pop": 0.191,
+      "r&b": 0.227,
+      "rap": 0.171,
+      "rock": 0.196
+    },
+    "catalog_genre_share": {
+      "edm": 0.167,
+      "latin": 0.167,
+      "pop": 0.167,
+      "r&b": 0.167,
+      "rap": 0.167,
+      "rock": 0.167
+    },
+    "catalog_mood_share": {
+      "chill": 0.146,
+      "happy": 0.417,
+      "intense": 0.317,
+      "melancholic": 0.042,
+      "sad": 0.079
+    }
+  },
+  "parser": {
+    "cases": 13,
+    "parse_success_rate": 1.0,
+    "named_genre_accuracy": 1.0,
+    "genre_invented_rate": 1.0,
+    "genre_indefensible_rate": 0.2,
+    "no_genre_tiers": {
+      "ideal": 0,
+      "acceptable": 4,
+      "wrong": 1
+    },
+    "mood_accuracy": 1.0,
+    "numeric_in_range_rate": 1.0,
+    "mood_numbers_coherence": 0.769,
+    "overall_case_pass_rate": 0.923,
+    "overall_case_pass_rate_strict": 0.615,
+    "per_case": [
+      {
+        "text": "upbeat pop for a morning run",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "pop",
+          "favorite_mood": "happy",
+          "target_energy": 0.9,
+          "target_valence": 0.8,
+          "target_acousticness": 0.2
+        },
+        "error": null
+      },
+      {
+        "text": "heavy rock to get hyped at the gym",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": false,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "rock",
+          "favorite_mood": "intense",
+          "target_energy": 0.95,
+          "target_valence": 0.7,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "slow sad r&b for a breakup",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "r&b",
+          "favorite_mood": "sad",
+          "target_energy": 0.2,
+          "target_valence": 0.1,
+          "target_acousticness": 0.6
+        },
+        "error": null
+      },
+      {
+        "text": "chill acoustic r&b for studying",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "r&b",
+          "favorite_mood": "chill",
+          "target_energy": 0.2,
+          "target_valence": 0.5,
+          "target_acousticness": 0.8
+        },
+        "error": null
+      },
+      {
+        "text": "club edm for a party",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "edm",
+          "favorite_mood": "happy",
+          "target_energy": 0.9,
+          "target_valence": 0.8,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "reggaeton for a summer cookout",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "latin",
+          "favorite_mood": "happy",
+          "target_energy": 0.8,
+          "target_valence": 0.8,
+          "target_acousticness": 0.2
+        },
+        "error": null
+      },
+      {
+        "text": "angry trap rap",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "rap",
+          "favorite_mood": "intense",
+          "target_energy": 0.9,
+          "target_valence": 0.2,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "mellow acoustic pop for a rainy evening",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": false,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "pop",
+          "favorite_mood": "chill",
+          "target_energy": 0.2,
+          "target_valence": 0.4,
+          "target_acousticness": 0.8
+        },
+        "error": null
+      },
+      {
+        "text": "something to help me focus while studying",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": true,
+        "genre_tier": "acceptable",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": false,
+        "profile": {
+          "favorite_genre": "pop",
+          "favorite_mood": "chill",
+          "target_energy": 0.3,
+          "target_valence": 0.5,
+          "target_acousticness": 0.6
+        },
+        "error": null
+      },
+      {
+        "text": "music for a sad rainy day",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": true,
+        "genre_tier": "wrong",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": false,
+        "passed_strict": false,
+        "profile": {
+          "favorite_genre": "rock",
+          "favorite_mood": "sad",
+          "target_energy": 0.2,
+          "target_valence": 0.1,
+          "target_acousticness": 0.7
+        },
+        "error": null
+      },
+      {
+        "text": "high energy workout music",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": true,
+        "genre_tier": "acceptable",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": false,
+        "passed": true,
+        "passed_strict": false,
+        "profile": {
+          "favorite_genre": "edm",
+          "favorite_mood": "intense",
+          "target_energy": 0.95,
+          "target_valence": 0.8,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "background music for dinner with friends",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": true,
+        "genre_tier": "acceptable",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": false,
+        "profile": {
+          "favorite_genre": "pop",
+          "favorite_mood": "chill",
+          "target_energy": 0.4,
+          "target_valence": 0.7,
+          "target_acousticness": 0.5
+        },
+        "error": null
+      },
+      {
+        "text": "songs to dance to",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": true,
+        "genre_tier": "acceptable",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": false,
+        "profile": {
+          "favorite_genre": "edm",
+          "favorite_mood": "happy",
+          "target_energy": 0.8,
+          "target_valence": 0.8,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      }
+    ]
+  },
+  "off_topic": {
+    "cases": 3,
+    "rejection_rate": 1.0,
+    "accepted": []
+  },
+  "consistency": {
+    "texts": 3,
+    "runs": 3,
+    "tolerance": 0.1,
+    "exact_identical_rate": 0.0,
+    "within_tolerance_rate": 0.667,
+    "max_numeric_deviation_seen": 0.1,
+    "unstable": [
+      "something to help me focus while studying"
+    ]
+  },
+  "regraded_from": "baseline"
+}
