@@ -289,3 +289,106 @@ def test_regrade_refuses_a_report_missing_a_case():
     from eval.regrade import regrade_parser
     with pytest.raises(SystemExit):
         regrade_parser({"per_case": []})
+
+
+# ---------- confidence check and explanation faithfulness ----------
+
+def test_confidence_check_compares_levels_with_expectations():
+    songs = load_songs(str(CATALOG_PATH))
+    out = metrics.confidence_check(
+        songs,
+        {**profiles.ALL_VALID_PROFILES, **profiles.CONFLICTING_EXTRA},
+        profiles.EXPECTED_CONFIDENCE,
+    )
+    assert out["profiles"] == len(profiles.ALL_VALID_PROFILES) + len(profiles.CONFLICTING_EXTRA)
+    assert out["per_profile"]["ghost_labels"]["level"] == "low"
+    assert out["per_profile"]["intense_rock"]["level"] == "high"
+    assert out["as_expected_rate"] == 1.0
+    # profiles with no stated expectation are reported but not judged
+    assert out["per_profile"]["genre_trap"]["as_expected"] is None
+    json.dumps(out)
+
+
+def test_confidence_check_flags_an_unmet_expectation():
+    songs = load_songs(str(CATALOG_PATH))
+    out = metrics.confidence_check(songs, {"intense_rock": profiles.NORMAL_PROFILES["intense_rock"]},
+                                   {"intense_rock": {"low"}})
+    assert out["per_profile"]["intense_rock"]["as_expected"] is False
+    assert out["as_expected_rate"] == 0.0
+
+
+def test_explanation_faithfulness_counts_passed_rejected_and_unusable():
+    from src.config import KNOWLEDGE_PATH
+    from src.retriever import Retriever, load_notes
+    songs = load_songs(str(CATALOG_PATH))
+    retriever = Retriever(load_notes(KNOWLEDGE_PATH))
+
+    def fake(system_prompt, user_text):
+        # rank 1 faithful, rank 2 invents a number, rank 3 missing, ranks 4-5 faithful
+        items = [{"rank": 1, "text": "A guitar-driven rock song."},
+                 {"rank": 2, "text": "It scores 0.97 overall."},
+                 {"rank": 4, "text": "A guitar-driven rock song."},
+                 {"rank": 5, "text": "A guitar-driven rock song."}]
+        return json.dumps({"explanations": items})
+
+    out = metrics.explanation_faithfulness(
+        songs, {"intense_rock": profiles.NORMAL_PROFILES["intense_rock"]}, retriever, generate=fake)
+    assert out["explanations"] == 5
+    assert out["passed_check"] == 3 and out["rejected"] == 1 and out["no_usable_text"] == 1
+    assert out["rejection_rate"] == 0.25
+    example = out["rejected_examples"][0]
+    assert example["text"] == "It scores 0.97 overall." and example["profile"] == "intense_rock"
+    assert any("0.97" in p for p in example["problems"])
+    json.dumps(out)
+
+
+def test_mutation_test_catches_every_blunt_corruption_and_has_no_false_alarms():
+    from src.config import KNOWLEDGE_PATH
+    from src.retriever import Retriever, load_notes
+    songs = load_songs(str(CATALOG_PATH))
+    retriever = Retriever(load_notes(KNOWLEDGE_PATH))
+    prof_map = {"intense_rock": profiles.NORMAL_PROFILES["intense_rock"],
+                "high_energy_pop": profiles.NORMAL_PROFILES["high_energy_pop"]}
+    samples = []
+    for name, raw in prof_map.items():
+        for rec in __import__("src.recommender", fromlist=["x"]).recommend_songs(validate_profile(raw), songs, k=5):
+            samples.append({"profile": name, "song_id": rec[0]["id"], "text": "A guitar-driven song with a live-band feel."})
+    out = metrics.checker_mutation_test(samples, songs, prof_map, retriever)
+    assert out["originals"] == 10
+    assert out["false_alarm_rate"] == 0.0
+    assert out["overall_recall"] == 1.0
+    assert out["per_mutation"]["made_up_number"] == {"applied": 10, "caught": 10, "recall": 1.0}
+    json.dumps(out)
+
+
+def test_mutation_test_reports_a_false_alarm_for_an_originally_unfaithful_text():
+    from src.config import KNOWLEDGE_PATH
+    from src.recommender import recommend_songs
+    from src.retriever import Retriever, load_notes
+    songs = load_songs(str(CATALOG_PATH))
+    prof_map = {"intense_rock": profiles.NORMAL_PROFILES["intense_rock"]}
+    rec = recommend_songs(validate_profile(prof_map["intense_rock"]), songs, k=1)[0]
+    bad = [{"profile": "intense_rock", "song_id": rec[0]["id"], "text": "It scores 0.97."}]
+    out = metrics.checker_mutation_test(bad, songs, prof_map, Retriever(load_notes(KNOWLEDGE_PATH)))
+    assert out["false_alarm_rate"] == 1.0
+
+
+# ---------- API failures are not model behavior ----------
+
+def test_run_parser_flags_api_failures_separately_from_refusals():
+    def failing(system_prompt, user_text):
+        raise RuntimeError("429")
+
+    out = metrics.run_parser(["a"], ["pop"], ["happy"], generate=failing, sleep=lambda s: None)
+    assert out[0]["profile"] is None and out[0]["api_error"] is True
+    refused = metrics.run_parser(["a"], ["pop"], ["happy"], generate=lambda s, u: "{}", sleep=lambda s: None)
+    assert refused[0]["profile"] is None and refused[0]["api_error"] is False
+    assert metrics.count_api_errors(out, refused) == 1
+
+
+def test_consistency_skips_texts_with_an_api_error_instead_of_calling_them_unstable():
+    good = {"text": "a", "profile": prof(), "error": None, "api_error": False}
+    broke = {"text": "a", "profile": None, "error": "The language model request failed: ClientError.", "api_error": True}
+    r = metrics.consistency(["a"], [[good], [broke], [good]])
+    assert r["skipped_api_errors"] == ["a"] and r["unstable"] == [] and r["judged"] == 0
+    assert r["within_tolerance_rate"] is None

@@ -11,6 +11,7 @@ CATALOG_PATH = DATA_DIR / "songs.csv"
 RAW_SOURCE_PATH = DATA_DIR / "spotify_songs.csv"
 LATIN_EXCLUSIONS_PATH = DATA_DIR / "latin_exclusions.txt"
 KNOWLEDGE_PATH = DATA_DIR / "knowledge" / "notes.json"
+LOG_PATH = ROOT_DIR / "logs" / "run.jsonl"  # gitignored; read at call time so tests can redirect it
 
 load_dotenv(ROOT_DIR / ".env")
 

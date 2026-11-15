@@ -115,3 +115,21 @@ CONSISTENCY_TEXTS = [
     "something to help me focus while studying",
     "heavy rock to get hyped at the gym",
 ]
+
+
+# Confidence levels a sensible score should give. Normal and formatting-only profiles should be
+# high; a profile asking for a genre and mood the catalog lacks should be low; conflicting
+# requests should not be high. (Written after seeing the first scores for the tricky profiles,
+# so those entries are not a blind prediction.)
+EXPECTED_CONFIDENCE = {
+    "starter": {"high"}, "chill_acoustic": {"high"}, "intense_rock": {"high"}, "high_energy_pop": {"high"},
+    "label_near_miss": {"high"},
+    "ghost_labels": {"low"},
+    "sad_but_hyper": {"low", "medium"},
+    "all_midpoint": {"low", "medium"},
+}
+CONFLICTING_EXTRA = {
+    "extreme_conflict": {"favorite_genre": "edm", "favorite_mood": "sad",
+                         "target_energy": 1.0, "target_valence": 0.0, "target_acousticness": 1.0},
+}
+EXPECTED_CONFIDENCE["extreme_conflict"] = {"low", "medium"}

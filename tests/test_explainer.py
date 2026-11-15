@@ -45,8 +45,12 @@ class FakeLLM:
         return reply
 
 
+RANK_WORDS = {1: "first", 2: "second", 3: "third"}
+
+
 def reply_for(*ranks, text="A good match."):
-    return json.dumps({"explanations": [{"rank": r, "text": f"{text} #{r}"} for r in ranks]})
+    """Digit-free texts: the faithfulness check rejects numbers that are not in the notes."""
+    return json.dumps({"explanations": [{"rank": r, "text": f"{text} Pick {RANK_WORDS[r]}."} for r in ranks]})
 
 
 def explain(recs, retriever, llm, **kw):
@@ -58,7 +62,7 @@ def explain(recs, retriever, llm, **kw):
 def test_llm_explanations_are_returned_in_order_with_their_notes(recs, retriever):
     out = explain(recs, retriever, FakeLLM(reply_for(1, 2, 3)))
     assert [e.source for e in out] == ["llm"] * 3
-    assert [e.text for e in out] == ["A good match. #1", "A good match. #2", "A good match. #3"]
+    assert [e.text for e in out] == [f"A good match. Pick {w}." for w in ("first", "second", "third")]
     first_song = recs[0][0]
     assert out[0].notes_used == [
         f"genre:{first_song['genre']}", f"subgenre:{first_song['subgenre']}", f"mood:{first_song['mood']}",
@@ -176,3 +180,33 @@ def test_fallback_explanation_text():
 def test_parse_explanations_keeps_first_duplicate():
     raw = json.dumps({"explanations": [{"rank": 1, "text": "first"}, {"rank": 1, "text": "second"}]})
     assert parse_explanations(raw, 3) == {1: "first"}
+
+
+# ---------- failure reasons are recorded ----------
+
+class CodedError(Exception):
+    code = 503
+
+
+def test_fallback_records_the_exception_type_and_code_but_not_the_message(recs, retriever):
+    out = explain(recs, retriever, FakeLLM(CodedError("secret=abc123")))
+    assert {e.error for e in out} == {"CodedError 503"}
+    assert "abc123" not in " ".join(e.error for e in out)
+
+
+def test_plain_exception_records_just_its_type(recs, retriever):
+    out = explain(recs, retriever, FakeLLM(RuntimeError("boom")))
+    assert {e.error for e in out} == {"RuntimeError"}
+
+
+def test_missing_rank_records_a_reason_even_though_the_call_worked(recs, retriever):
+    out = explain(recs, retriever, FakeLLM(reply_for(1, 3)))
+    assert out[1].error == "no usable text for this song"
+    assert out[0].error is None and out[2].error is None
+
+
+def test_rejected_text_is_kept_for_audit_and_is_not_an_error(recs, retriever):
+    bad = json.dumps({"explanations": [{"rank": r, "text": "It scores 0.97."} for r in (1, 2, 3)]})
+    out = explain(recs, retriever, FakeLLM(bad))
+    assert all(e.faithful is False and e.rejected_text == "It scores 0.97." and e.error is None for e in out)
+    assert all(any("0.97" in p for p in e.problems) for e in out)

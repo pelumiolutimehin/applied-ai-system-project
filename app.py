@@ -11,8 +11,10 @@ from src.config import CATALOG_PATH, KNOWLEDGE_PATH
 from src.explainer import explain_recommendations
 from src.llm_parser import MAX_REQUEST_CHARS, ParseError, parse_request
 from src.profile import ProfileError, UserProfile, validate_profile
+from src.reliability import ConfidenceReport, assess_confidence
 from src.recommender import load_songs, recommend_songs
 from src.retriever import Retriever, load_notes
+from src.runlog import build_record, log_run
 
 
 @st.cache_data
@@ -79,6 +81,30 @@ def sidebar_profile(songs) -> UserProfile:
     })
 
 
+FACTOR_LABELS = {
+    "strength": "Best match strength",
+    "mood_support": "Results matching the requested mood",
+    "genre_support": "Results matching the requested genre",
+    "coherence": "Mood agrees with energy and positivity",
+    "known_labels": "Genre and mood exist in the catalog",
+    "faithful": "AI explanations that passed the evidence check",
+}
+
+
+def show_confidence(report: ConfidenceReport) -> None:
+    st.markdown(f"**Confidence: {report.level}** ({report.score:.2f})")
+    if report.level == "low":
+        detail = "; ".join(report.notes) or "the best matches are weak"
+        st.warning(f"Low confidence: {detail}. Treat these results as rough suggestions.")
+    with st.expander("How is confidence calculated?"):
+        st.caption("A simple weighted average of the signals below. It is a rule of thumb, not a probability.")
+        for name, value in report.factors.items():
+            shown = "n/a" if value is None else f"{value:.2f}"
+            st.write(f"- {FACTOR_LABELS[name]}: {shown}")
+        for note in report.notes:
+            st.write(f"- Note: {note}")
+
+
 def show_recommendations(recommendations, explanations=None) -> None:
     for rank, (song, score, breakdown) in enumerate(recommendations, start=1):
         with st.container(border=True):
@@ -127,17 +153,21 @@ def main() -> None:
     )
 
     profile = slider_profile
+    source, parse_error = "sliders", None
     if request.strip():
+        source = "sliders_fallback"
         if not config.llm_available():
+            parse_error = "no API key"
             st.info("Free-text requests need a GEMINI_API_KEY (see .env.example). Using the sidebar settings instead.")
         else:
             genres = tuple(sorted({s["genre"] for s in songs}))
             moods = tuple(sorted({s["mood"] for s in songs}))
             parsed, error = cached_parse(request.strip(), genres, moods)
             if parsed is not None:
-                profile = parsed
+                profile, source = parsed, "text"
                 st.caption(f"Interpreted as: {describe(parsed)}")
             else:
+                parse_error = error
                 st.warning(f"{error} Using the sidebar settings instead.")
 
     try:
@@ -150,7 +180,18 @@ def main() -> None:
     if want_explanations:
         explanations = cached_explain(tuple(profile.to_dict().values()), k)
 
+    report = assess_confidence(
+        profile, recommendations,
+        {s["genre"] for s in songs}, {s["mood"] for s in songs}, explanations,
+    )
+    show_confidence(report)
     show_recommendations(recommendations, explanations)
+
+    # One log line per distinct run, not one per Streamlit rerun.
+    run_key = (request.strip(), tuple(profile.to_dict().values()), k, want_explanations)
+    if st.session_state.get("last_logged_run") != run_key:
+        st.session_state["last_logged_run"] = run_key
+        log_run(build_record(request.strip(), source, profile, recommendations, report, explanations, parse_error))
 
 
 main()
