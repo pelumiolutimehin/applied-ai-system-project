@@ -45,6 +45,49 @@ def test_numeric_closeness_is_symmetric():
     assert above == pytest.approx(below)
 
 
+# ---------- no genre preference ----------
+
+NO_GENRE = dict(POP_HAPPY, favorite_genre=None)
+
+
+def test_no_genre_skips_the_genre_feature_and_a_perfect_match_still_scores_one():
+    score, reasons = score_song(NO_GENRE, make_song())
+    assert score == pytest.approx(1.0)
+    assert len(reasons) == 4 and not any(r.startswith("genre") for r in reasons)
+
+
+def test_no_genre_rescales_weights_so_each_feature_keeps_its_relative_share():
+    _, reasons = score_song(NO_GENRE, make_song())
+    assert "mood match (+0.29)" in reasons     # 0.25 / 0.85
+    assert "energy close (+0.35)" in reasons   # 0.30 / 0.85
+
+
+def test_no_genre_does_not_prefer_any_genre():
+    rock = make_song(id=1, genre="rock")
+    pop = make_song(id=2, genre="pop")
+    assert score_song(NO_GENRE, rock)[0] == pytest.approx(score_song(NO_GENRE, pop)[0])
+
+
+def test_a_genre_preference_still_prefers_that_genre():
+    rock = make_song(id=1, genre="rock")
+    pop = make_song(id=2, genre="pop")
+    assert score_song(POP_HAPPY, pop)[0] > score_song(POP_HAPPY, rock)[0]
+
+
+def test_validate_accepts_none_genre_but_requires_the_key():
+    assert validate_profile(NO_GENRE).favorite_genre is None
+    with pytest.raises(ProfileError):
+        validate_profile({k: v for k, v in POP_HAPPY.items() if k != "favorite_genre"})
+
+
+def test_recommend_works_over_the_real_catalog_with_no_genre():
+    songs = load_songs(str(CATALOG_PATH))
+    results = recommend_songs(NO_GENRE, songs, k=5)
+    assert len(results) == 5
+    assert all(0.0 <= score <= 1.0 for _, score, _ in results)
+    assert len({s["genre"] for s, _, _ in results}) >= 1
+
+
 # ---------- ranking ----------
 
 def test_recommend_sorted_best_first_and_respects_k():

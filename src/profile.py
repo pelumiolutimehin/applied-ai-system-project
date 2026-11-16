@@ -2,7 +2,7 @@
 
 import math
 from dataclasses import dataclass, asdict
-from typing import Dict
+from typing import Dict, Optional
 
 NUMERIC_FIELDS = ("target_energy", "target_valence", "target_acousticness")
 LABEL_FIELDS = ("favorite_genre", "favorite_mood")
@@ -32,7 +32,7 @@ def normalize_label(label: str) -> str:
 
 @dataclass
 class UserProfile:
-    favorite_genre: str
+    favorite_genre: Optional[str]  # None means no genre preference
     favorite_mood: str
     target_energy: float
     target_valence: float
@@ -45,7 +45,8 @@ class UserProfile:
 def validate_profile(raw: Dict) -> UserProfile:
     """Turn a raw dict into a UserProfile, or raise ProfileError.
 
-    Rejects: non-dict input, missing keys, non-string or empty labels,
+    A genre of None means no preference (the key must still be present). Rejects: non-dict
+    input, missing keys, non-string or empty labels (the mood is always required),
     non-numeric targets (including numbers given as strings, booleans, NaN),
     and targets outside 0..1. Labels are normalized.
     """
@@ -59,6 +60,9 @@ def validate_profile(raw: Dict) -> UserProfile:
     labels = {}
     for field in LABEL_FIELDS:
         value = raw[field]
+        if field == "favorite_genre" and value is None:
+            labels[field] = None  # explicit "no genre preference"
+            continue
         if not isinstance(value, str) or not value.strip():
             raise ProfileError(f"{field} must be a non-empty string")
         labels[field] = normalize_label(value)

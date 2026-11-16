@@ -229,3 +229,30 @@ def test_failed_text_request_is_logged_as_a_fallback(fake_llm):
     record = runlog.read_log()[-1]
     assert record["source"] == "sliders_fallback"
     assert "couldn't find" in record["parse_error"]
+
+
+# ---------- no genre preference (5c) ----------
+
+def test_genre_defaults_to_no_preference_and_results_render():
+    at = run_app()
+    assert at.sidebar.selectbox(key="genre").value == "No preference"
+    assert not at.exception and len(at.subheader) == 5
+
+
+def test_no_genre_results_have_no_genre_mismatch_reasons_and_confidence_is_not_penalised():
+    at = run_app()
+    assert not at.exception
+    text = " ".join(m.value for m in at.markdown)
+    assert "genre mismatch" not in text
+    assert "Confidence: " in text
+
+
+def test_free_text_without_a_genre_is_described_as_no_preference(fake_llm):
+    fake_llm.reply["value"] = json.dumps({
+        "favorite_genre": None,
+        "target_energy": 0.3, "target_valence": 0.6, "target_acousticness": 0.7,
+    })
+    at = run_app()
+    at.text_input(key="request").input("something to help me study").run()
+    assert not at.exception
+    assert any("no preference" in c.value and "chill" in c.value for c in at.caption)

@@ -63,7 +63,6 @@ def test_labels_are_normalized():
     "bad, fragment",
     [
         (dict(GOOD, favorite_genre="k-pop"), "not in the catalog"),
-        (dict(GOOD, favorite_mood="nostalgic"), "not in the catalog"),
         (dict(GOOD, target_energy=3.0), "invalid profile"),
         (dict(GOOD, target_valence="0.9"), "invalid profile"),
         ({k: v for k, v in GOOD.items() if k != "target_energy"}, "invalid profile"),
@@ -146,10 +145,16 @@ def test_error_message_does_not_leak_exception_details():
 # ---------- prompt construction ----------
 
 def test_system_prompt_lists_catalog_labels_and_warns_about_untrusted_input():
-    prompt = build_system_prompt(GENRES, MOODS)
-    for label in GENRES + MOODS:
+    prompt = build_system_prompt(GENRES)
+    for label in GENRES:
         assert label in prompt
     assert "untrusted" in prompt
+
+
+def test_system_prompt_makes_genre_optional_and_does_not_ask_for_a_mood():
+    prompt = build_system_prompt(GENRES)
+    assert "or null" in prompt and "Do not guess a genre" in prompt
+    assert '"favorite_mood"' not in prompt
 
 
 def test_user_text_is_sent_separately_from_system_prompt():
@@ -167,3 +172,43 @@ def test_extract_json_rejects_non_objects():
         extract_json("[1, 2, 3]")
     with pytest.raises(ValueError):
         extract_json("no braces here")
+
+
+# ---------- optional genre, mood derived from the numbers (5c) ----------
+
+@pytest.mark.parametrize("genre_value", [None, "", "   "])
+def test_null_or_blank_genre_means_no_genre_preference(genre_value):
+    profile = parse("music for studying", FakeLLM(json.dumps(dict(GOOD, favorite_genre=genre_value))))
+    assert profile.favorite_genre is None
+
+
+def test_missing_genre_key_means_no_genre_preference():
+    reply = {k: v for k, v in GOOD.items() if k != "favorite_genre"}
+    assert parse("music for studying", FakeLLM(json.dumps(reply))).favorite_genre is None
+
+
+def test_a_named_but_unknown_genre_is_still_rejected():
+    with pytest.raises(ParseError, match="not in the catalog"):
+        parse("k-pop", FakeLLM(json.dumps(dict(GOOD, favorite_genre="k-pop"))))
+
+
+@pytest.mark.parametrize(
+    "energy, valence, expected",
+    [(0.8, 0.9, "happy"), (0.9, 0.2, "intense"), (0.3, 0.8, "chill")],
+)
+def test_mood_comes_from_the_numbers_and_ignores_the_models_mood(energy, valence, expected):
+    # the model says "happy" every time; the numbers decide
+    reply = json.dumps(dict(GOOD, favorite_mood="happy", target_energy=energy, target_valence=valence))
+    assert parse("x", FakeLLM(reply)).favorite_mood == expected
+
+
+def test_reply_without_any_mood_key_is_fine():
+    reply = {k: v for k, v in GOOD.items() if k != "favorite_mood"}
+    assert parse("upbeat pop", FakeLLM(json.dumps(reply))).favorite_mood == "happy"
+
+
+def test_bad_numbers_are_still_reported_as_an_invalid_profile():
+    # the placeholder mood used when a number is unusable must never leak into a valid profile
+    for bad in (dict(GOOD, target_energy="high"), dict(GOOD, target_valence=None), dict(GOOD, target_energy=True)):
+        with pytest.raises(ParseError, match="invalid profile"):
+            parse("x", FakeLLM(json.dumps(bad)))

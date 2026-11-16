@@ -34,6 +34,9 @@ TRICKY_PROFILES = {
     # genre matches but every numeric target is the opposite of the genre's usual sound
     "genre_trap": {"favorite_genre": "r&b", "favorite_mood": "intense",
                    "target_energy": 0.95, "target_valence": 0.2, "target_acousticness": 0.0},
+    # no genre preference: valid since 5c (the genre feature is skipped, not scored)
+    "no_genre": {"favorite_genre": None, "favorite_mood": "chill",
+                 "target_energy": 0.35, "target_valence": 0.6, "target_acousticness": 0.7},
 }
 
 # Malformed input the guardrail must reject.
@@ -49,8 +52,6 @@ MALFORMED_PROFILES = {
                    "target_energy": True, "target_valence": 0.8, "target_acousticness": 0.2},
     "empty_label": {"favorite_genre": "  ", "favorite_mood": "happy",
                     "target_energy": 0.5, "target_valence": 0.5, "target_acousticness": 0.5},
-    "none_label": {"favorite_genre": None, "favorite_mood": "happy",
-                   "target_energy": 0.5, "target_valence": 0.5, "target_acousticness": 0.5},
     "not_a_dict": None,
 }
 
@@ -127,6 +128,7 @@ EXPECTED_CONFIDENCE = {
     "ghost_labels": {"low"},
     "sad_but_hyper": {"low", "medium"},
     "all_midpoint": {"low", "medium"},
+    "no_genre": {"high"},
 }
 CONFLICTING_EXTRA = {
     "extreme_conflict": {"favorite_genre": "edm", "favorite_mood": "sad",
