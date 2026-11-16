@@ -1,0 +1,763 @@
+{
+  "date": "2026-11-15",
+  "model": "gemini-3.5-flash-lite",
+  "catalog_size": 240,
+  "guardrail": {
+    "malformed_rejected_rate": 1.0,
+    "valid_accepted_rate": 1.0,
+    "wrongly_accepted": [],
+    "wrongly_rejected": []
+  },
+  "ranking": {
+    "profiles": 90,
+    "k": 5,
+    "catalog_size": 240,
+    "coverage": 0.721,
+    "never_recommended": 67,
+    "top10_songs_share_of_slots": 0.184,
+    "max_artist_share_of_slots": 0.029,
+    "genre_match_rate": 0.773,
+    "mood_match_rate": 0.94,
+    "recommended_genre_share": {
+      "edm": 0.096,
+      "latin": 0.12,
+      "pop": 0.191,
+      "r&b": 0.227,
+      "rap": 0.171,
+      "rock": 0.196
+    },
+    "catalog_genre_share": {
+      "edm": 0.167,
+      "latin": 0.167,
+      "pop": 0.167,
+      "r&b": 0.167,
+      "rap": 0.167,
+      "rock": 0.167
+    },
+    "catalog_mood_share": {
+      "chill": 0.146,
+      "happy": 0.417,
+      "intense": 0.317,
+      "melancholic": 0.042,
+      "sad": 0.079
+    }
+  },
+  "confidence": {
+    "profiles": 11,
+    "as_expected_rate": 1.0,
+    "per_profile": {
+      "starter": {
+        "score": 0.986,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "chill_acoustic": {
+        "score": 0.988,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "intense_rock": {
+        "score": 0.995,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "high_energy_pop": {
+        "score": 0.995,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "sad_but_hyper": {
+        "score": 0.599,
+        "level": "low",
+        "expected": [
+          "low",
+          "medium"
+        ],
+        "as_expected": true
+      },
+      "ghost_labels": {
+        "score": 0.223,
+        "level": "low",
+        "expected": [
+          "low"
+        ],
+        "as_expected": true
+      },
+      "label_near_miss": {
+        "score": 0.991,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "all_midpoint": {
+        "score": 0.798,
+        "level": "medium",
+        "expected": [
+          "low",
+          "medium"
+        ],
+        "as_expected": true
+      },
+      "genre_trap": {
+        "score": 0.974,
+        "level": "high",
+        "expected": null,
+        "as_expected": null
+      },
+      "no_genre": {
+        "score": 0.984,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "extreme_conflict": {
+        "score": 0.532,
+        "level": "low",
+        "expected": [
+          "low",
+          "medium"
+        ],
+        "as_expected": true
+      }
+    }
+  },
+  "parser": {
+    "cases": 13,
+    "parse_success_rate": 1.0,
+    "named_genre_accuracy": 1.0,
+    "genre_invented_rate": 0.0,
+    "genre_indefensible_rate": 0.0,
+    "no_genre_tiers": {
+      "ideal": 5,
+      "acceptable": 0,
+      "wrong": 0
+    },
+    "mood_accuracy": 1.0,
+    "numeric_in_range_rate": 1.0,
+    "mood_numbers_coherence": 1.0,
+    "overall_case_pass_rate": 1.0,
+    "overall_case_pass_rate_strict": 1.0,
+    "per_case": [
+      {
+        "text": "upbeat pop for a morning run",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "pop",
+          "favorite_mood": "happy",
+          "target_energy": 0.85,
+          "target_valence": 0.9,
+          "target_acousticness": 0.15
+        },
+        "error": null
+      },
+      {
+        "text": "heavy rock to get hyped at the gym",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "rock",
+          "favorite_mood": "happy",
+          "target_energy": 0.9,
+          "target_valence": 0.7,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "slow sad r&b for a breakup",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "r&b",
+          "favorite_mood": "sad",
+          "target_energy": 0.2,
+          "target_valence": 0.1,
+          "target_acousticness": 0.5
+        },
+        "error": null
+      },
+      {
+        "text": "chill acoustic r&b for studying",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "r&b",
+          "favorite_mood": "chill",
+          "target_energy": 0.2,
+          "target_valence": 0.5,
+          "target_acousticness": 0.85
+        },
+        "error": null
+      },
+      {
+        "text": "club edm for a party",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "edm",
+          "favorite_mood": "happy",
+          "target_energy": 0.9,
+          "target_valence": 0.8,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "reggaeton for a summer cookout",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "latin",
+          "favorite_mood": "happy",
+          "target_energy": 0.8,
+          "target_valence": 0.9,
+          "target_acousticness": 0.2
+        },
+        "error": null
+      },
+      {
+        "text": "angry trap rap",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "rap",
+          "favorite_mood": "intense",
+          "target_energy": 0.9,
+          "target_valence": 0.2,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "mellow acoustic pop for a rainy evening",
+        "parsed": true,
+        "genre_ok": true,
+        "genre_invented": null,
+        "genre_tier": null,
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": "pop",
+          "favorite_mood": "melancholic",
+          "target_energy": 0.2,
+          "target_valence": 0.4,
+          "target_acousticness": 0.9
+        },
+        "error": null
+      },
+      {
+        "text": "something to help me focus while studying",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": false,
+        "genre_tier": "ideal",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": null,
+          "favorite_mood": "chill",
+          "target_energy": 0.2,
+          "target_valence": 0.5,
+          "target_acousticness": 0.8
+        },
+        "error": null
+      },
+      {
+        "text": "music for a sad rainy day",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": false,
+        "genre_tier": "ideal",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": null,
+          "favorite_mood": "sad",
+          "target_energy": 0.2,
+          "target_valence": 0.1,
+          "target_acousticness": 0.8
+        },
+        "error": null
+      },
+      {
+        "text": "high energy workout music",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": false,
+        "genre_tier": "ideal",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": null,
+          "favorite_mood": "happy",
+          "target_energy": 0.9,
+          "target_valence": 0.8,
+          "target_acousticness": 0.1
+        },
+        "error": null
+      },
+      {
+        "text": "background music for dinner with friends",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": false,
+        "genre_tier": "ideal",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": null,
+          "favorite_mood": "chill",
+          "target_energy": 0.4,
+          "target_valence": 0.6,
+          "target_acousticness": 0.5
+        },
+        "error": null
+      },
+      {
+        "text": "songs to dance to",
+        "parsed": true,
+        "genre_ok": null,
+        "genre_invented": false,
+        "genre_tier": "ideal",
+        "mood_ok": true,
+        "numeric_ok": true,
+        "coherent": true,
+        "passed": true,
+        "passed_strict": true,
+        "profile": {
+          "favorite_genre": null,
+          "favorite_mood": "happy",
+          "target_energy": 0.8,
+          "target_valence": 0.8,
+          "target_acousticness": 0.2
+        },
+        "error": null
+      }
+    ]
+  },
+  "off_topic": {
+    "cases": 3,
+    "rejection_rate": 1.0,
+    "accepted": []
+  },
+  "consistency": {
+    "texts": 3,
+    "judged": 3,
+    "skipped_api_errors": [],
+    "runs": 3,
+    "tolerance": 0.1,
+    "exact_identical_rate": 0.0,
+    "within_tolerance_rate": 1.0,
+    "max_numeric_deviation_seen": 0.1,
+    "unstable": []
+  },
+  "api_errors": {
+    "parser_requests": 0,
+    "off_topic_requests": 0,
+    "consistency_requests": 0
+  },
+  "explanations": {
+    "explanations": 55,
+    "passed_check": 55,
+    "rejected": 0,
+    "no_usable_text": 0,
+    "no_usable_text_reasons": {},
+    "rejection_rate": 0.0,
+    "rejected_examples": [],
+    "samples": [
+      {
+        "profile": "starter",
+        "song_id": 151,
+        "text": "This track fits your R&B taste and hits your chill mood with its relaxed, easygoing, and pleasant urban contemporary style featuring smooth vocals and hip hop influences."
+      },
+      {
+        "profile": "starter",
+        "song_id": 149,
+        "text": "Matches your R&B genre and chill mood preferences, offering an easygoing and pleasant listening experience with its new jack swing fusion of R&B vocals and hip hop drum programming."
+      },
+      {
+        "profile": "starter",
+        "song_id": 138,
+        "text": "Brings together your preferred R&B genre and chill mood with a warm, smooth, and mellow neo soul sound featuring relaxed, intimate vocals and jazz harmony."
+      },
+      {
+        "profile": "starter",
+        "song_id": 154,
+        "text": "A great match for your R&B genre and chill mood, delivering a relaxed, pleasant urban contemporary sound defined by smooth vocals and polished, rhythmic production."
+      },
+      {
+        "profile": "starter",
+        "song_id": 136,
+        "text": "Aligns with your R&B preference and chill mood by delivering a warm, smooth, and mellow neo soul feel with relaxed, intimate vocals and jazz harmony."
+      },
+      {
+        "profile": "chill_acoustic",
+        "song_id": 111,
+        "text": "This track fits your pop preference and matches your chill mood with its relaxed, easygoing, and pleasant post-teen pop style featuring moody, minimalist production."
+      },
+      {
+        "profile": "chill_acoustic",
+        "song_id": 103,
+        "text": "Matches your chill mood by delivering a relaxed, easygoing, and pleasant listening experience while fitting your pop taste with an independent, offbeat indie poptimism sensibility."
+      },
+      {
+        "profile": "chill_acoustic",
+        "song_id": 102,
+        "text": "This song matches your pop taste and chill mood, offering a relaxed and pleasant atmosphere through its indie poptimism style that mixes pop hooks with lo-fi touches."
+      },
+      {
+        "profile": "chill_acoustic",
+        "song_id": 82,
+        "text": "Brings a chill mood that feels relaxed and easygoing, while fitting your pop genre preference with its dance pop style built around strong hooks."
+      },
+      {
+        "profile": "chill_acoustic",
+        "song_id": 104,
+        "text": "Matches your pop genre and chill mood with a relaxed, easygoing vibe, utilizing an indie poptimism subgenre that blends catchy pop hooks with experimental touches."
+      },
+      {
+        "profile": "intense_rock",
+        "song_id": 221,
+        "text": "This track fits your rock genre preference and matches your intense mood with its driving, powerful, and darker tone. As hard rock, it turns up the volume and intensity featuring distorted guitars, heavy riffs, and powerful vocals."
+      },
+      {
+        "profile": "intense_rock",
+        "song_id": 234,
+        "text": "This song matches your rock genre and intense mood, delivering a driving and powerful tone. It belongs to the permanent wave subgenre, mixing rock guitars with a stylish and melodic sound."
+      },
+      {
+        "profile": "intense_rock",
+        "song_id": 222,
+        "text": "This hard rock track matches your rock genre and intense mood with its driving, powerful, and darker tone. It increases volume and intensity through distorted guitars, heavy riffs, and powerful vocals."
+      },
+      {
+        "profile": "intense_rock",
+        "song_id": 219,
+        "text": "This track aligns with your rock genre and intense mood, offering a driving and powerful feel. As classic rock, it features guitar-driven music with strong riffs, melodic hooks, and live-band energy."
+      },
+      {
+        "profile": "intense_rock",
+        "song_id": 230,
+        "text": "This hard rock selection matches your rock genre and intense mood by providing a powerful, driving, and darker tone. It brings high volume and intensity using distorted guitars, heavy riffs, and powerful vocals."
+      },
+      {
+        "profile": "high_energy_pop",
+        "song_id": 87,
+        "text": "This track fits your pop preference with its upbeat tempo, bright synths, and strong, repetitive hooks. It matches your happy mood with its lively energy and positive sound."
+      },
+      {
+        "profile": "high_energy_pop",
+        "song_id": 98,
+        "text": "This pop song matches your happy mood with its upbeat and lively energy. It centers synthesizers and electronic production to deliver catchy melodies and clear hooks."
+      },
+      {
+        "profile": "high_energy_pop",
+        "song_id": 90,
+        "text": "Built for the dance floor, this pop track features upbeat tempos, bright synths, and strong hooks. It matches your happy mood with its lively energy and positive feel."
+      },
+      {
+        "profile": "high_energy_pop",
+        "song_id": 113,
+        "text": "This pop recommendation matches your happy mood with an upbeat, bright, and lively style. It brings polished production aimed at a wide audience with clear hooks."
+      },
+      {
+        "profile": "high_energy_pop",
+        "song_id": 91,
+        "text": "Centering synthesizers and electronic production, this pop track delivers catchy melodies and clear hooks. It matches your happy mood with its upbeat, bright, and lively profile."
+      },
+      {
+        "profile": "sad_but_hyper",
+        "song_id": 97,
+        "text": "This track fits your pop genre preference and matches your sad mood with its electropop sound featuring synthesizers and electronic production."
+      },
+      {
+        "profile": "sad_but_hyper",
+        "song_id": 113,
+        "text": "Recommended because it matches your pop genre preference, featuring polished production and catchy hooks with post-teen pop elements."
+      },
+      {
+        "profile": "sad_but_hyper",
+        "song_id": 90,
+        "text": "This song is a match for your pop genre preference, offering upbeat tempos and bright synths built for the dance floor."
+      },
+      {
+        "profile": "sad_but_hyper",
+        "song_id": 87,
+        "text": "Selected for your pop genre preference, bringing dance pop elements like upbeat tempos and bright synths."
+      },
+      {
+        "profile": "sad_but_hyper",
+        "song_id": 98,
+        "text": "This track aligns with your pop genre preference, delivering an electropop style centered around synthesizers and electronic production."
+      },
+      {
+        "profile": "ghost_labels",
+        "song_id": 138,
+        "text": "This neo soul track offers a warm, smooth, and mellow sound with jazz harmony, hip hop influences, and relaxed, intimate vocals."
+      },
+      {
+        "profile": "ghost_labels",
+        "song_id": 180,
+        "text": "This hip hop track features classic sample-based boom-bap beats supporting rhythmic, lyric-focused spoken vocals."
+      },
+      {
+        "profile": "ghost_labels",
+        "song_id": 136,
+        "text": "Enjoy the warm, smooth, and mellow feel of this neo soul piece, featuring jazz harmony, hip hop influences, and relaxed vocals."
+      },
+      {
+        "profile": "ghost_labels",
+        "song_id": 82,
+        "text": "This dance pop song brings upbeat tempos, bright synths, and strong, repetitive hooks built for the dance floor."
+      },
+      {
+        "profile": "ghost_labels",
+        "song_id": 174,
+        "text": "This hip hop selection delivers classic rap style with boom-bap beats under rhythmic, lyric-focused spoken vocals."
+      },
+      {
+        "profile": "label_near_miss",
+        "song_id": 124,
+        "text": "This track fits your R&B preference and matches your chill mood, bringing a relaxed, easygoing, and pleasant hip pop sound with soulful, melodic vocals."
+      },
+      {
+        "profile": "label_near_miss",
+        "song_id": 154,
+        "text": "Recommended because it is an R&B track that matches your chill mood, featuring urban contemporary style with smooth vocals and polished, rhythmic production."
+      },
+      {
+        "profile": "label_near_miss",
+        "song_id": 149,
+        "text": "This song matches your R&B genre and chill mood, offering new jack swing that fuses R&B vocals with hip hop drum programming."
+      },
+      {
+        "profile": "label_near_miss",
+        "song_id": 138,
+        "text": "An R&B recommendation that matches your chill mood, bringing a neo soul style with jazz harmony and relaxed, intimate vocals."
+      },
+      {
+        "profile": "label_near_miss",
+        "song_id": 146,
+        "text": "This R&B selection matches your chill mood, featuring new jack swing with R&B vocals and hip hop drum programming."
+      },
+      {
+        "profile": "all_midpoint",
+        "song_id": 115,
+        "text": "This track matches your pop genre and happy mood preferences, delivering an upbeat, bright, and lively post-teen pop style with catchy melodies and polished production."
+      },
+      {
+        "profile": "all_midpoint",
+        "song_id": 110,
+        "text": "Recommended because it shares your pop genre and happy mood, featuring an indie poptimism style that mixes pop hooks with an independent, offbeat sensibility."
+      },
+      {
+        "profile": "all_midpoint",
+        "song_id": 95,
+        "text": "This song fits your pop genre and happy mood preferences, bringing you an electropop style that centers synthesizers and electronic production within upbeat, bright pop music."
+      },
+      {
+        "profile": "all_midpoint",
+        "song_id": 93,
+        "text": "Selected for its matching pop genre and happy mood, offering an electropop sound centered around synthesizers and electronic production with catchy hooks."
+      },
+      {
+        "profile": "all_midpoint",
+        "song_id": 109,
+        "text": "This track aligns with your pop genre and happy mood preferences, presenting an indie poptimism style that combines catchy pop hooks with an offbeat sensibility."
+      },
+      {
+        "profile": "genre_trap",
+        "song_id": 122,
+        "text": "This track matches your R&B genre preference and fits your intense mood, delivering a driving, powerful, and darker tone through its hip pop style."
+      },
+      {
+        "profile": "genre_trap",
+        "song_id": 159,
+        "text": "This song aligns with your R&B genre preference and matches your intense mood with a powerful, darker tone, featuring urban contemporary's polished, rhythmic production."
+      },
+      {
+        "profile": "genre_trap",
+        "song_id": 128,
+        "text": "This track fits your R&B genre and matches your intense mood, offering a driving and powerful feel with its hip pop blend of R&B vocals and hip hop beats."
+      },
+      {
+        "profile": "genre_trap",
+        "song_id": 133,
+        "text": "This song matches your R&B genre preference and your intense mood, delivering a powerful and darker tone through the neo soul subgenre."
+      },
+      {
+        "profile": "genre_trap",
+        "song_id": 160,
+        "text": "This track delivers the R&B genre you requested along with an intense mood, featuring the smooth vocals and polished production of urban contemporary."
+      },
+      {
+        "profile": "no_genre",
+        "song_id": 111,
+        "text": "This post-teen pop track fits your chill mood with its relaxed, easygoing, and pleasant vibe, featuring lower energy and positive valence."
+      },
+      {
+        "profile": "no_genre",
+        "song_id": 124,
+        "text": "Selected for its chill mood, this hip pop song brings a relaxed, easygoing, and pleasant feel with lower energy and a positive valence."
+      },
+      {
+        "profile": "no_genre",
+        "song_id": 55,
+        "text": "This latin pop track matches your chill mood, offering a relaxed, easygoing, and pleasant sound with lower energy and positive valence."
+      },
+      {
+        "profile": "no_genre",
+        "song_id": 154,
+        "text": "An urban contemporary song that matches your chill mood with its relaxed, easygoing, and pleasant tone, featuring lower energy and positive valence."
+      },
+      {
+        "profile": "no_genre",
+        "song_id": 170,
+        "text": "This gangster rap song delivers a relaxed, easygoing, and pleasant chill mood, featuring lower energy and a positive valence."
+      },
+      {
+        "profile": "extreme_conflict",
+        "song_id": 56,
+        "text": "This Latin pop song features a slow and somber sad mood that fits what you are looking for, alongside a close acousticness level."
+      },
+      {
+        "profile": "extreme_conflict",
+        "song_id": 40,
+        "text": "As an electronic dance music track, it matches your preferred genre with synthesized sounds and steady danceable beats in a progressive electro house style."
+      },
+      {
+        "profile": "extreme_conflict",
+        "song_id": 36,
+        "text": "This track fits your electronic dance music genre preference, utilizing progressive electro house sounds with layered melodies."
+      },
+      {
+        "profile": "extreme_conflict",
+        "song_id": 126,
+        "text": "This hip pop song matches your sad mood preference with its slow and somber feel."
+      },
+      {
+        "profile": "extreme_conflict",
+        "song_id": 1,
+        "text": "Matching your electronic dance music genre, this big room track features festival-oriented heavy kick drums and dramatic build-ups."
+      }
+    ]
+  },
+  "checker_validation": {
+    "originals": 55,
+    "false_alarm_rate": 0.0,
+    "overall_recall": 1.0,
+    "per_mutation": {
+      "false_acoustic": {
+        "applied": 44,
+        "caught": 44,
+        "recall": 1.0
+      },
+      "false_energy": {
+        "applied": 55,
+        "caught": 55,
+        "recall": 1.0
+      },
+      "false_genre_match": {
+        "applied": 7,
+        "caught": 7,
+        "recall": 1.0
+      },
+      "invented_genre": {
+        "applied": 55,
+        "caught": 55,
+        "recall": 1.0
+      },
+      "made_up_number": {
+        "applied": 55,
+        "caught": 55,
+        "recall": 1.0
+      },
+      "wrong_mood": {
+        "applied": 55,
+        "caught": 55,
+        "recall": 1.0
+      }
+    }
+  }
+}

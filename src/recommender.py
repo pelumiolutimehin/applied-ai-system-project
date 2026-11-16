@@ -33,19 +33,25 @@ def load_songs(csv_path: str) -> List[Dict]:
 
 def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     """Return a song's weighted match score against validated preferences and the reasons behind it."""
+    genre_wanted = user_prefs["favorite_genre"] is not None
     scores = {
         "energy": 1 - abs(song["energy"] - user_prefs["target_energy"]),
         "mood": 1.0 if song["mood"] == user_prefs["favorite_mood"] else 0.0,
         "valence": 1 - abs(song["valence"] - user_prefs["target_valence"]),
-        "genre": 1.0 if song["genre"] == user_prefs["favorite_genre"] else 0.0,
+        "genre": (1.0 if song["genre"] == user_prefs["favorite_genre"] else 0.0) if genre_wanted else None,
         "acousticness": 1 - abs(song["acousticness"] - user_prefs["target_acousticness"]),
     }
+
+    # With no genre preference the genre feature is skipped and the other weights are
+    # rescaled to sum to 1, so scores stay comparable (a perfect match is still 1.0).
+    active = {f: w for f, w in WEIGHTS.items() if scores[f] is not None}
+    scale = 1.0 / sum(active.values())
 
     total = 0.0
     reasons = []
 
-    for feature, weight in WEIGHTS.items():
-        contribution = weight * scores[feature]
+    for feature, weight in active.items():
+        contribution = weight * scale * scores[feature]
         total += contribution
 
         if feature in ("mood", "genre"):

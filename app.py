@@ -53,10 +53,13 @@ def cached_parse(text: str, genres: tuple, moods: tuple):
 
 def describe(profile: UserProfile) -> str:
     return (
-        f"genre **{profile.favorite_genre}**, mood **{profile.favorite_mood}**, "
+        f"genre **{profile.favorite_genre or 'no preference'}**, mood **{profile.favorite_mood}**, "
         f"energy {profile.target_energy:.2f}, positivity {profile.target_valence:.2f}, "
         f"acousticness {profile.target_acousticness:.2f}"
     )
+
+
+NO_GENRE = "No preference"
 
 
 def sidebar_profile(songs) -> UserProfile:
@@ -65,7 +68,7 @@ def sidebar_profile(songs) -> UserProfile:
     moods = sorted({s["mood"] for s in songs})
 
     st.sidebar.header("Your taste")
-    genre = st.sidebar.selectbox("Favorite genre", genres, key="genre")
+    genre = st.sidebar.selectbox("Favorite genre", [NO_GENRE] + genres, key="genre")
     mood = st.sidebar.selectbox("Favorite mood", moods, key="mood")
     energy = st.sidebar.slider("Energy (calm to intense)", 0.0, 1.0, 0.5, 0.05, key="energy")
     valence = st.sidebar.slider("Positivity (dark to upbeat)", 0.0, 1.0, 0.5, 0.05, key="valence")
@@ -73,7 +76,7 @@ def sidebar_profile(songs) -> UserProfile:
 
     # Same guardrail as every other entry point.
     return validate_profile({
-        "favorite_genre": genre,
+        "favorite_genre": None if genre == NO_GENRE else genre,
         "favorite_mood": mood,
         "target_energy": energy,
         "target_valence": valence,

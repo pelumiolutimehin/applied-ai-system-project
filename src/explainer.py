@@ -76,7 +76,7 @@ def build_user_message(
 ) -> str:
     lines = [
         "LISTENER PROFILE: "
-        f"genre={profile.favorite_genre}, mood={profile.favorite_mood}, "
+        f"genre={profile.favorite_genre or 'no preference'}, mood={profile.favorite_mood}, "
         f"energy={profile.target_energy:.2f}, positivity={profile.target_valence:.2f}, "
         f"acousticness={profile.target_acousticness:.2f}",
         "",
