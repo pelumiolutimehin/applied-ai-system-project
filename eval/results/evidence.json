@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-15",
+  "model": null,
+  "catalog_size": 240,
+  "guardrail": {
+    "malformed_rejected_rate": 1.0,
+    "valid_accepted_rate": 1.0,
+    "wrongly_accepted": [],
+    "wrongly_rejected": []
+  },
+  "ranking": {
+    "profiles": 90,
+    "k": 5,
+    "catalog_size": 240,
+    "coverage": 0.721,
+    "never_recommended": 67,
+    "top10_songs_share_of_slots": 0.184,
+    "max_artist_share_of_slots": 0.029,
+    "genre_match_rate": 0.773,
+    "mood_match_rate": 0.94,
+    "recommended_genre_share": {
+      "edm": 0.096,
+      "latin": 0.12,
+      "pop": 0.191,
+      "r&b": 0.227,
+      "rap": 0.171,
+      "rock": 0.196
+    },
+    "catalog_genre_share": {
+      "edm": 0.167,
+      "latin": 0.167,
+      "pop": 0.167,
+      "r&b": 0.167,
+      "rap": 0.167,
+      "rock": 0.167
+    },
+    "catalog_mood_share": {
+      "chill": 0.146,
+      "happy": 0.417,
+      "intense": 0.317,
+      "melancholic": 0.042,
+      "sad": 0.079
+    }
+  },
+  "confidence": {
+    "profiles": 11,
+    "as_expected_rate": 1.0,
+    "per_profile": {
+      "starter": {
+        "score": 0.986,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "chill_acoustic": {
+        "score": 0.988,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "intense_rock": {
+        "score": 0.995,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "high_energy_pop": {
+        "score": 0.995,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "sad_but_hyper": {
+        "score": 0.599,
+        "level": "low",
+        "expected": [
+          "low",
+          "medium"
+        ],
+        "as_expected": true
+      },
+      "ghost_labels": {
+        "score": 0.223,
+        "level": "low",
+        "expected": [
+          "low"
+        ],
+        "as_expected": true
+      },
+      "label_near_miss": {
+        "score": 0.991,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "all_midpoint": {
+        "score": 0.798,
+        "level": "medium",
+        "expected": [
+          "low",
+          "medium"
+        ],
+        "as_expected": true
+      },
+      "genre_trap": {
+        "score": 0.974,
+        "level": "high",
+        "expected": null,
+        "as_expected": null
+      },
+      "no_genre": {
+        "score": 0.984,
+        "level": "high",
+        "expected": [
+          "high"
+        ],
+        "as_expected": true
+      },
+      "extreme_conflict": {
+        "score": 0.532,
+        "level": "low",
+        "expected": [
+          "low",
+          "medium"
+        ],
+        "as_expected": true
+      }
+    }
+  }
+}
